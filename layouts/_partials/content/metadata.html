@@ -1,0 +1,67 @@
+{{- /* Collect post meta items in a scratch for flexible rendering */}}
+{{- $metaScratch := newScratch }}
+
+{{- /* 1) Date */}}
+{{- if not .Date.IsZero }}
+    {{- $dateTitle := printf "%v - %v" (.Date | time.Format ":date_full") (.Date | time.Format ":time_long") }}
+    {{- $dateFormat := site.Params.neso.time_format | default ":date_medium" }}
+    {{- $dateText := .Date | time.Format $dateFormat }}
+    {{- $metaScratch.Add "meta" (slice (dict "kind" "date" "title" $dateTitle "text" $dateText)) }}
+{{- end }}
+
+{{- /* 2) Word count (site on, page not disabled) */}}
+{{- $siteShowsWordCount := site.Params.neso.page.show_word_count }}
+{{- $pageDisablesWordCount := .Params.neso.disable_word_count }}
+{{- if and $siteShowsWordCount (not $pageDisablesWordCount) }}
+    {{- $wordsText := (i18n "words" .WordCount | default (printf "%d words" .WordCount)) }}
+    {{- $metaScratch.Add "meta" (slice (dict "kind" "text" "text" $wordsText)) }}
+{{- end }}
+
+{{- /* 3) Reading time (site on, page not disabled) */}}
+{{- $siteShowsReadingTime := site.Params.neso.page.show_reading_time }}
+{{- $pageDisablesReadingTime := .Params.neso.disable_reading_time }}
+{{- if and $siteShowsReadingTime (not $pageDisablesReadingTime) }}
+    {{- $readingText := (i18n "read_time" .ReadingTime | default (printf "Reading: %d min" .ReadingTime)) }}
+    {{- $metaScratch.Add "meta" (slice (dict "kind" "text" "text" $readingText)) }}
+{{- end }}
+
+{{- /* 4) Author (site on, page not disabled) */}}
+{{- $siteShowsAuthor := site.Params.neso.page.show_author }}
+{{- $pageDisablesAuthor := .Params.neso.disable_author }}
+{{- if and $siteShowsAuthor (not $pageDisablesAuthor) }}
+    {{- $authors := partial "_funcs/get-author.html" . }}
+    {{- with $authors }}
+        {{- $metaScratch.Add "meta" (slice (dict "kind" "authors" "list" .)) }}
+    {{- end }}
+{{- end }}
+
+{{- /* Render collected metadata items */}}
+{{- with ($metaScratch.Get "meta") }}
+    {{- range $index, $item := . }}
+        {{- if reflect.IsMap $item }}
+            {{- $kind := index $item "kind" }}
+            {{- if eq $kind "date" }}
+                <span class="not-last:sep-e-general" title="{{ index $item "title" }}">{{- index $item "text" -}}</span>
+            {{- else if eq $kind "text" }}
+                <span class="not-last:sep-e-general">{{- index $item "text" -}}</span>
+            {{- else if eq $kind "authors" }}
+                {{- $list := index $item "list" }}
+                {{- $last := sub (len $list) 1 }}
+                <span class="sr-only">{{- i18n "author" | default "Author: " -}}</span>
+                <ul class="contents not-last:sep-e-general">
+                    {{- range $i, $name := $list }}
+                        <li class="hyphens-auto {{- if lt $i $last }} sep-e-and{{- end }}">
+                            {{- $name -}}
+                        </li>
+                    {{- end }}
+                </ul>
+            {{- else if eq $kind "html" }}
+                {{ index $item "html" | safeHTML }}
+            {{- else }}
+                {{ $item | jsonify | safeHTML }}
+            {{- end }}
+        {{- else }}
+            {{ $item | safeHTML }}
+        {{- end }}
+    {{- end }}
+{{- end }}

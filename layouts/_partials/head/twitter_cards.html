@@ -1,0 +1,112 @@
+{{- /*
+    Modified from Hugo embedded template:
+    https://github.com/gohugoio/hugo/blob/0f18cbe990a715180e3fde85652540e8bcbffdb5/tpl/tplimpl/embedded/templates/_partials/twitter_cards.html
+*/}}
+
+{{- $images := partial "_funcs/get-page-images" . }}
+{{- with index $images 0 }}
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:image" content="{{ .Permalink }}">
+{{- else }}
+    <meta name="twitter:card" content="summary">
+{{- end }}
+
+
+{{- if .IsHome }}
+    {{- with or site.Title site.Params.title | plainify }}
+        <meta name="twitter:title" content="{{ . }}">
+    {{- end }}
+{{- else }}
+    {{- with or .Title site.Title site.Params.title | plainify }}
+        <meta name="twitter:title" content="{{ . }}">
+    {{- end }}
+{{- end }}
+
+
+{{- $desc := "" }}
+{{- if .IsHome }}
+    {{- with or site.Params.neso.seo.site_description site.Params.description .Description }}
+        {{- $desc = . }}
+    {{- end }}
+{{- else }}
+    {{- with .Description }}
+        {{- $desc = . }}
+    {{- else }}
+        {{- if .IsPage }}
+            {{- $desc = .Summary }}
+        {{- else }}
+            {{- with or site.Params.neso.seo.site_description site.Params.description }}
+                {{- $desc = . }}
+            {{- end }}
+        {{- end }}
+    {{- end }}
+{{- end }}
+
+{{- with $desc | plainify | htmlUnescape | strings.TrimSpace }}
+    <meta name="twitter:description" content="{{ . }}">
+{{- end }}
+
+
+{{- if site.Params.neso.social.links }}
+    {{- /* Iterate social links */}}
+    {{- range site.Params.neso.social.links }}
+        {{- $name := lower .name }}
+        {{- if or (eq $name "twitter") (eq $name "x") }}
+            {{- $raw := .url | default "" }}
+            {{- $raw = trim $raw " " }}
+            {{- $raw = trim $raw "@" }}
+
+            {{- /* Determine if the string looks like a URL; otherwise treat it as a username */}}
+            {{- $looksURL := or (in $raw "://") (hasPrefix $raw "//") (in $raw ".") }}
+
+            {{- $u := "" }}
+            {{- if $looksURL }}
+            {{- /* If the scheme is missing, prepend https:// before parsing */}}
+                {{- $toParse := cond (or (in $raw "://") (hasPrefix $raw "//")) $raw (printf "https://%s" $raw) }}
+                {{- $u = urls.Parse $toParse }}
+            {{- end }}
+
+            {{- /* Extract the username */}}
+            {{- $username := "" }}
+
+            {{- if $u }}
+            {{- /* From the URL path, take the first segment (remove subpaths, parameters, trailing slash, etc.) */}}
+                {{- $path := $u.Path }}
+                {{- $username = replaceRE "^/+([^/?#]+).*$" "$1" $path }}
+                {{- $username = trim $username " /" }}
+                {{- $username = trim $username "@" }}
+            {{- else }}
+            {{- /* Not a URL: directly treat the input as a username */}}
+                {{- $username = trim $raw " /" }}
+            {{- end }}
+
+            {{- if $username }}
+                <meta name="twitter:site" content="{{ printf "@%v" $username }}">
+
+                {{- /* Other output formats */ -}}
+                {{- /* 
+                {{- $canonical := printf "https://x.com/%s" $username -}}
+                {{- <a href="{{ $canonical }}" rel="me noopener" target="_blank">X</a> -}}
+                {{- return (dict "service" "x" "username" $username "url" $canonical) -}}
+                */ -}}
+
+            {{- end }}
+        {{- end }}
+    {{- end }}
+
+{{- else }}
+
+    {{- $twitterSite := "" }}
+    {{- with site.Params.social }}
+        {{- if reflect.IsMap . }}
+                {{- with .twitter }}
+                    {{- $content := . }}
+                    {{- if not (strings.HasPrefix . "@") }}
+                        {{- $content = printf "@%v" . }}
+                    {{- end }}
+                    <meta name="twitter:site" content="{{ $content }}">
+                {{- end }}
+        {{- end }}
+    {{- end }}
+
+{{- end -}}

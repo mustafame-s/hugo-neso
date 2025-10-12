@@ -1,0 +1,58 @@
+{{- $outDir := site.Params.neso.assets.output_dir | default "assets" }}
+{{- $license := resources.Get "css/license.css" }}
+
+{{- $main      := resources.Get "css/_main.css"
+                | resources.ExecuteAsTemplate "css/twin.css" (dict "noJS" false)
+                | css.TailwindCSS (dict "minify" hugo.IsProduction "optimize" true) }}
+{{- $mainNoJS  := resources.Get "css/_main.css"
+                | resources.ExecuteAsTemplate "css/twin-nojs.css" (dict "noJS" true)
+                | css.TailwindCSS (dict "minify" hugo.IsProduction "optimize" true) }}
+
+{{- $style     := (slice $license $main)
+                | resources.Concat (path.Join $outDir "css/style.css") }}
+{{- $styleNoJS := (slice $license $mainNoJS)
+                | resources.Concat (path.Join $outDir "css/style-nojs.css") }}
+
+{{- $forceColorScheme := (site.Params.neso.force_color_scheme | default false) }}
+{{- if in (slice true "true") $forceColorScheme }}
+    {{- $forceColorScheme = "system" }}
+{{- end }}
+{{- $explicitColorScheme := and $forceColorScheme (ne $forceColorScheme "system") }}
+
+
+{{- if not site.Params.neso.assets.disable_fingerprinting }}
+
+    {{- $style = $style | fingerprint }}
+    {{- $styleNoJS = $styleNoJS | fingerprint }}
+
+    <link rel="stylesheet"
+          href="{{ $style.RelPermalink }}"
+          integrity="{{ $style.Data.Integrity }}"
+          crossorigin="anonymous">
+    
+    {{- if not $explicitColorScheme }}
+        <noscript>
+            <link rel="stylesheet"
+                  href="{{ $styleNoJS.RelPermalink }}"
+                  integrity="{{ $styleNoJS.Data.Integrity }}"
+                  crossorigin="anonymous">
+        </noscript>
+    {{- end }}
+    
+{{- else }}
+
+    <link rel="stylesheet" href="{{ $style.RelPermalink }}">
+
+    {{- if not $explicitColorScheme }}
+        <noscript>
+            <link rel="stylesheet" href="{{ $styleNoJS.RelPermalink }}">
+        </noscript>
+    {{- end }}
+
+{{- end }}
+
+<noscript>
+    <style>
+        .color-scheme-control, .top-link { display: none !important; }
+    </style>
+</noscript>

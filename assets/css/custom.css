@@ -1,0 +1,63 @@
+/* 
+ * --------------------------------
+ * Tailwind generates the final CSS in the order below,
+ * later ones override earlier ones.
+ * --------------------------------
+ */
+
+
+@theme {
+    /* Tailwind's default theme will be injected here. */
+    
+    /* Define or override Tailwind's theme variables (design tokens).
+     * It's special – auto-generates utility classes like `bg-my-default`.
+     * Example: 
+     * --color-my-default: #bada55;
+     */
+    
+}
+
+@layer theme {
+    /* Theme variables defined in `@theme` will be injected here. */
+    
+    /* Custom CSS – other design tokens.
+     * Example: 
+     * :root { --my-favorite: #0290b0; }
+     */
+    
+}
+
+@layer base {
+    /* Tailwind's resets (Preflight) will be injected here. */
+    
+    /* Custom CSS – other resets.
+     * Example: 
+     * a { text-decoration: none; }
+     */
+    
+}
+
+@layer components {
+    /* Custom CSS – components.
+     * Example: 
+     * .headline { font-size: 2rem; }
+     */
+    
+}
+
+/* Define custom Tailwind utility classes,
+ * It's special – can be used with variants like `hover:shiny`.
+ * Example:
+ * @utility shiny { color: #ffffff; }
+ */
+
+
+@layer utilities {
+    /* Utility classes defined by `@utility` will be injected here. */
+    
+    /* Custom CSS – other utilities.
+     * Example: 
+     * .bright { color: #aaaaaa; }
+     */
+    
+}

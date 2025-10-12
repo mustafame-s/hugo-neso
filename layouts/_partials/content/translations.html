@@ -1,0 +1,17 @@
+{{- if .IsTranslated }}
+    <span class="whitespace-pre">{{- i18n "translations" | default "Translations:&nbsp;" | safeHTML -}}</span>
+    <ul class="contents">
+        {{- $translations := .Translations }}
+        {{- range $i, $t := $translations }}
+            <li>
+                <a class="ui-link not-last:sep-e-comma" href="{{ $t.RelPermalink }}">
+                    {{- if or site.Params.neso.display_short_lang_name (not $t.Language.LanguageName) }}
+                        {{- $t.Lang | upper -}}
+                    {{- else }}
+                        {{- $t.Language.LanguageName -}}
+                    {{- end -}}
+                </a>
+            </li>
+        {{- end }}
+    </ul>
+{{- end -}}

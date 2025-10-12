@@ -1,0 +1,72 @@
+{{- $brandingImgs := partialCached "_funcs/get-branding-assets.html" . -}}
+
+
+{{- $icons := slice -}}
+
+{{- with index $brandingImgs "pwa_icon_svg" -}}
+  {{- $icons = $icons | append (dict
+      "src"     .
+      "type"    "image/svg+xml"
+      "sizes"   "any"
+      "purpose" "any"
+    ) -}}
+{{- end -}}
+
+{{- with index $brandingImgs "pwa_icon_192" -}}
+  {{- $icons = $icons | append (dict
+      "src"     .
+      "type"    "image/png"
+      "sizes"   "192x192"
+      "purpose" "any"
+    ) -}}
+{{- end -}}
+
+{{- with index $brandingImgs "pwa_icon_512" -}}
+  {{- $icons = $icons | append (dict
+      "src"     .
+      "type"    "image/png"
+      "sizes"   "512x512"
+      "purpose" "any"
+    ) -}}
+{{- end -}}
+
+{{- with index $brandingImgs "pwa_icon_maskable_svg" -}}
+  {{- $icons = $icons | append (dict
+      "src"     .
+      "type"    "image/svg+xml"
+      "sizes"   "any"
+      "purpose" "maskable"
+    ) -}}
+{{- end -}}
+
+{{- with index $brandingImgs "pwa_icon_maskable_192" -}}
+  {{- $icons = $icons | append (dict
+      "src"     .
+      "type"    "image/png"
+      "sizes"   "192x192"
+      "purpose" "maskable"
+    ) -}}
+{{- end -}}
+
+{{- with index $brandingImgs "pwa_icon_maskable_512" -}}
+  {{- $icons = $icons | append (dict
+      "src"     .
+      "type"    "image/png"
+      "sizes"   "512x512"
+      "purpose" "maskable"
+    ) -}}
+{{- end -}}
+
+
+{{- $manifest := dict
+  "name"             site.Title
+  "short_name"       (site.Params.neso.branding.pwa_short_title | default site.Title)
+  "description"      site.Params.neso.seo.site_description
+  "start_url"        "/"
+  "display"          "standalone"
+  "icons"            $icons
+  "theme_color"      (site.Params.neso.branding.pwa_theme_color_light | default "#ffffff")
+  "background_color" (site.Params.neso.branding.pwa_theme_color_light | default "#ffffff")
+-}}
+
+{{- $manifest | jsonify -}}

@@ -1,0 +1,68 @@
+{{- /*
+  Rules:
+    If user provided a value under site.Params.neso.branding:
+    – If it's an absolute URL (has scheme): use as-is.
+    – If it's a relative path and exists in /assets (resources.GetMatch): copy > fingerprint > return absolute URL.
+    – Else treat as static path: relURL → absURL (no pipeline, no fingerprint).
+*/}}
+
+{{- $outDir := site.Params.neso.assets.output_dir | default "assets" }}
+{{- $cfg    := site.Params.neso.branding | default dict }}
+{{- $out    := dict }}
+
+{{- /* Map: cfg=user key, out=output key */}}
+{{- $items := slice
+    (dict "cfg" "logo_image"               "out" "logo_image")
+    (dict "cfg" "logo_image_dark"          "out" "logo_image_dark")
+    (dict "cfg" "og_image"                 "out" "og_image")
+    (dict "cfg" "favicon_svg"              "out" "favicon_svg")
+    (dict "cfg" "apple_touch_icon"         "out" "apple_touch_icon")
+    (dict "cfg" "pwa_icon_svg"             "out" "pwa_icon_svg")
+    (dict "cfg" "pwa_icon_192"             "out" "pwa_icon_192")
+    (dict "cfg" "pwa_icon_512"             "out" "pwa_icon_512")
+    (dict "cfg" "pwa_icon_maskable_svg"    "out" "pwa_icon_maskable_svg")
+    (dict "cfg" "pwa_icon_maskable_192"    "out" "pwa_icon_maskable_192")
+    (dict "cfg" "pwa_icon_maskable_512"    "out" "pwa_icon_maskable_512")
+}}
+
+{{- range $items }}
+    {{- $cfgVal := index $cfg .cfg }}
+    {{- $url    := "" }}
+
+    {{- if $cfgVal }}
+    {{- /* User provided something */}}
+        {{- $s := printf "%v" $cfgVal }}
+        {{- $u := urls.Parse $s }}
+
+        {{- if eq $u.Scheme "" }}
+        {{- /* Relative path; first try /assets (pipelineable), else treat as static file */}}
+            {{- with resources.GetMatch (strings.TrimPrefix "/" $s) }}
+                {{- $copied := . | resources.Copy (path.Join $outDir .Name) }}
+                {{- if not site.Params.neso.assets.disable_fingerprinting }}
+                    {{- $fp  := $copied | fingerprint }}
+                    {{- $url = absURL $fp.RelPermalink }}
+                {{- else }}
+                    {{- $url = absURL $copied.RelPermalink }}
+                {{- end }}
+            {{- else }}
+            {{- /* Treat as static only if it actually exists under /static */}}
+                {{- $rel := strings.TrimPrefix "/" $s }}
+                {{- $rel = strings.TrimPrefix "static/" $rel }}
+                {{- if fileExists (printf "static/%s" $rel) }}
+                    {{- $url = absURL (relURL $rel) }}
+                {{- else }}
+                {{- /* Not found in /assets nor /static: leave empty so caller can fallback */}}
+                    {{- $url = "" }}
+                {{- end }}
+            {{- end }}
+        {{- else }}
+        {{- /* Absolute URL: use as-is */}}
+            {{- $url = $s }}
+        {{- end }}
+    {{- end }}
+
+    {{- $out = merge $out (dict .out $url) }}
+
+{{- end }}
+
+{{- return $out -}}

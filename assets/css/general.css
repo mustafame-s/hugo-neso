@@ -1,0 +1,351 @@
+@custom-variant dark {
+    &:where([data-color-scheme=dark]),
+    &:where([data-color-scheme=dark] *) {
+        @slot;
+    }
+}
+
+@custom-variant menu-on {
+    &:where([data-menu-state=expanded]),
+    &:where([data-menu-state=expanded] *) {
+        @slot;
+    }
+}
+
+@theme {
+    /* Tailwind's default theme will be injected here. */
+    
+    /* Define or override Tailwind's theme variables (design tokens).
+     * It's special – auto-generates utility classes like `bg-my-default`.
+     * Example: 
+     * --color-my-default: #bada55;
+     */
+    
+    /* Tailwind default overrides */
+    
+    --breakpoint-*: initial;
+    --breakpoint-sm: 416px;
+    --breakpoint-md: 735px;
+    --breakpoint-lg: 1024px;
+    /* be sure to modify responsive menu JS if change breakpoints */
+    
+    /* Other customizations */
+    
+    --touch-target: 44px;
+    
+    --spacing-r-xs:  var(--rest-xs);
+    --spacing-r-sm:  var(--rest-sm);
+    --spacing-r-md:  var(--rest-md);
+    --spacing-r-lg:  var(--rest-lg);
+    --spacing-r-xl:  var(--rest-xl);
+    --spacing-r-2xl: var(--rest-2xl);
+    
+}
+
+@layer theme {
+    /* Theme variables defined in `@theme` will be injected here. */
+    
+    /* Custom CSS – other design tokens.
+     * Example: 
+     * :root { --my-favorite: #0290b0; }
+     */
+    
+    :root, :host {
+
+        --rest-xs:  calc(var(--spacing) * 1);
+        --rest-sm:  calc(var(--spacing) * 2);
+        --rest-md:  calc(var(--spacing) * 3);
+        --rest-lg:  calc(var(--spacing) * 5);
+        --rest-xl:  calc(var(--spacing) * 8);
+        --rest-2xl: calc(var(--spacing) * 13);
+        
+        /*
+        @variant sm {
+            --rest-xs:  calc(var(--spacing) * 1  * 1.25);
+            --rest-sm:  calc(var(--spacing) * 2  * 1.25);
+            --rest-md:  calc(var(--spacing) * 3  * 1.25);
+            --rest-lg:  calc(var(--spacing) * 5  * 1.25);
+            --rest-xl:  calc(var(--spacing) * 8  * 1.25);
+            --rest-2xl: calc(var(--spacing) * 13 * 1.25);
+        }
+        */
+        
+        @variant md {
+            --rest-xs:  calc(var(--spacing) * 1  * 1.5);
+            --rest-sm:  calc(var(--spacing) * 2  * 1.5);
+            --rest-md:  calc(var(--spacing) * 3  * 1.5);
+            --rest-lg:  calc(var(--spacing) * 5  * 1.5);
+            --rest-xl:  calc(var(--spacing) * 8  * 1.5);
+            --rest-2xl: calc(var(--spacing) * 13 * 1.5);
+        }
+        
+        /*
+        @variant lg {
+            --rest-xs:  calc(var(--spacing) * 1  * 1.625);
+            --rest-sm:  calc(var(--spacing) * 2  * 1.625);
+            --rest-md:  calc(var(--spacing) * 3  * 1.625);
+            --rest-lg:  calc(var(--spacing) * 5  * 1.625);
+            --rest-xl:  calc(var(--spacing) * 8  * 1.625);
+            --rest-2xl: calc(var(--spacing) * 13 * 1.625);
+        }
+        */
+    }
+    
+}
+
+@layer base {
+    /* Tailwind's resets (Preflight) will be injected here. */
+    
+    /* Custom CSS – other resets.
+     * Example: 
+     * a { text-decoration: none; }
+     */
+    
+    :root, :host {
+        scrollbar-gutter: stable both-edges;
+
+        @apply
+            menu-on:overflow-hidden
+        ;
+    }
+
+    body {
+        @apply
+            menu-on:overflow-hidden
+            text-neso-fg2 bg-neso-bg1
+        ;
+    }
+    
+    a {
+        @apply
+            font-medium text-neso-fg1
+            underline underline-offset-2 decoration-neso-accent/64
+            transition-colors
+        ;
+
+        &:hover,
+        &:focus-visible {
+            @apply
+                text-neso-splash
+                underline decoration-neso-splash/64
+            ;
+        }
+    }
+    
+}
+
+@layer components {
+    /* Custom CSS – components.
+     * Example: 
+     * .headline { font-size: 2rem; }
+     */
+    
+    .layout {
+        @apply
+            mx-auto px-[22px]
+            /* width incl. paddings */
+            w-full
+            sm:max-w-[480px] /* vpw 416-734 */
+            md:max-w-[620px] /* vpw 735-1023 */
+            lg:max-w-[697px] /* vpw 1024- */
+        ;
+    }
+    
+    .layout-hero {
+        @apply
+            mx-auto px-[22px]
+            /* width incl. paddings */
+            w-full
+            sm:max-w-[540px]  /* vpw 416-734 */
+            md:max-w-[735px]  /* vpw 735-1023 */
+            lg:max-w-[1024px] /* vpw 1024- */
+        ;
+    }
+    
+    .layout-fluid {
+        @apply
+            mx-auto px-[22px]
+            /* width incl. paddings */
+            w-full
+            max-w-[1024px]
+        ;
+    }
+        
+    .btn {
+        @apply
+            font-medium
+            no-underline
+            px-3 py-2
+            rounded-xl
+            bg-neso-bg2
+            hover:bg-neso-bg3
+            focus-visible:bg-neso-bg3
+            active:bg-neso-deco2
+        ;
+    }
+    
+    .ui-link {
+        @apply
+            font-normal text-neso-fg2
+            no-underline
+        ;
+
+        &:hover,
+        &:focus-visible {
+            @apply
+                text-neso-fg0
+                no-underline
+            ;
+        }
+    }
+    
+}
+
+/* Define custom Tailwind utility classes,
+ * It's special – can be used with variants like `hover:shiny`.
+ * Example:
+ * @utility shiny { color: #ffffff; }
+ */
+
+@utility expansive {
+    @apply min-h-[60svh];
+}
+
+
+/* 一般分隔：西文預設 `⸱` U+2E31，CJK `・` U+30FB */
+
+@utility sep-s-general {
+    &::before {
+        @apply inline-block align-baseline;
+        content: "⸱";
+        margin-inline: .35em;
+    }
+    :lang(zh) &::before,
+    :lang(ja) &::before,
+    :lang(ko) &::before {
+        content: "・";
+        margin-inline: 0;
+    }
+}
+ 
+@utility sep-e-general {
+    &::after {
+        @apply inline-block align-baseline;
+        content: "⸱";
+        margin-inline: .35em;
+    }
+    :lang(zh) &::after,
+    :lang(ja) &::after,
+    :lang(ko) &::after {
+        content: "・";
+        margin-inline: 0;
+    }
+}
+
+/* 逗號語意分隔：一般語系半形逗號，C `，` U+FF0C、J `、` U+3001 */
+/* 韓文慣例接近西文，沿用預設 */
+
+@utility sep-s-comma {
+    &::before {
+        @apply inline-block align-baseline;
+        content: ",";
+        margin-inline-end: .35em;
+    }
+    :lang(zh) &::before {
+        content: "，";
+        margin-inline-end: 0;
+    }
+    :lang(ja) &::before {
+        content: "、";
+        margin-inline-end: 0;
+    }
+}
+ 
+@utility sep-e-comma {
+    &::after {
+        @apply inline-block align-baseline;
+        content: ",";
+        margin-inline-end: .35em;
+    }
+    :lang(zh) &::after {
+        content: "，";
+        margin-inline-end: 0;
+    }
+    :lang(ja) &::after {
+        content: "、";
+        margin-inline-end: 0;
+    }
+}
+
+/* 頓號語意分隔：一般語系半形逗號，C `、` U+3001 */
+
+@utility sep-s-and {
+    &::before {
+        @apply inline-block align-baseline;
+        content: ",";
+        margin-inline-end: .35em;
+    }
+    :lang(zh) &::before {
+        content: "、";
+        margin-inline-end: 0;
+    }
+}
+ 
+@utility sep-e-and {
+    &::after {
+        @apply inline-block align-baseline;
+        content: ",";
+        margin-inline-end: .35em;
+    }
+    :lang(zh) &::after {
+        content: "、";
+        margin-inline-end: 0;
+    }
+}
+
+/* 冒號語意分隔：一般語系半形冒號，CJ `：` U+FF1A */
+
+@utility sep-s-colon {
+    &::before {
+        @apply inline-block align-baseline;
+        content: ":";
+        margin-inline-end: .35em;
+    }
+    :lang(zh) &::before,
+    :lang(ja) &::before {
+        content: "：";
+        margin-inline-end: 0;
+    }
+    /* 法文前有細空白習慣，加一點左間距 */
+    :lang(fr) &::before {
+        margin-inline-start: .25em;
+    }
+}
+ 
+@utility sep-e-colon {
+    &::after {
+        @apply inline-block align-baseline;
+        content: ":";
+        margin-inline-end: .35em;
+    }
+    :lang(zh) &::after,
+    :lang(ja) &::after {
+        content: "：";
+        margin-inline-end: 0;
+    }
+    /* 法文前有細空白習慣，加一點左間距 */
+    :lang(fr) &::after {
+        margin-inline-start: .25em;
+    }
+}
+
+
+@layer utilities {
+    /* Utility classes defined by `@utility` will be injected here. */
+    
+    /* Custom CSS – other utilities.
+     * Example: 
+     * .bright { color: #aaaaaa; }
+     */
+    
+}

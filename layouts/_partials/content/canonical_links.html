@@ -1,0 +1,34 @@
+{{- $uiIcons := partialCached "_funcs/get-ui-icons.html" . }}
+
+{{- if and (.Params.neso.canonical_url) (site.Params.neso.page.show_canonical_link) }}
+    {{- $siteHost   := (urls.Parse site.BaseURL).Host }}
+    {{- $url        := urls.Parse .Params.neso.canonical_url }}
+    {{- $isExternal := and $url.IsAbs (ne $url.Host $siteHost) }}
+    <span>
+        {{- (.Params.neso.canonical_link_text | default site.Params.neso.page.canonical_link_text)
+            | default "Originally published at" -}}
+    </span>
+    
+    <a href="{{ trim .Params.neso.canonical_url " " }}"
+       title="{{ trim .Params.neso.canonical_url " " }}"
+       class="inline-flex flex-wrap gap-1 items-center [&_svg]:text-neso-fg3/64"
+       {{- if $isExternal }}
+       {{- if site.Params.neso.ext_link_no_opener_referrer }}
+       rel="external noreferrer noopener"
+       {{- end }}
+       {{- if site.Params.neso.ext_link_new_window }}
+       target="_blank"
+       {{- end }}
+       {{- end -}}
+    >
+        <span>
+            {{ $url.Host }}
+        </span>
+        {{- if and $isExternal site.Params.neso.ext_link_indicator }}
+            <svg class="shrink-0 grow-0 size-[1em] stroke-2 stroke-current fill-none">
+                <use href="{{ $uiIcons.RelPermalink }}#external-link" />
+            </svg>
+        {{- end }}
+    </a>
+
+{{- end -}}

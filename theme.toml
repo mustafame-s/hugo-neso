@@ -1,0 +1,75 @@
+name = "Neso"
+description = "A modern, minimal Hugo theme crafted with care."
+homepage = "https://github.com/babeneso/hugo-neso"
+demosite = "https://babeneso.github.io/hugo-neso/"
+
+tags = [
+  "landing",
+  "personal",
+  "blog",
+  "portfolio",
+  "tailwind",
+  "customization",
+  "dark mode",
+  "design",
+  "minimal",
+  "modern",
+  "typography",
+  "responsive",
+  "multilingual"
+]
+
+features = [
+  "seo",
+  "favicon",
+  "schema",
+  "pwa",
+  "manifest",
+  "minimal design",
+  "tailwind",
+  "prose",
+  "customizable",
+  "color scheme",
+  "dark mode",
+  "responsive",
+  "responsive image",
+  "accessibility",
+  "internationalization",
+  "rtl",
+  "blog",
+  "profile",
+  "intro",
+  "search",
+  "archives",
+  "cover",
+  "thumbnails",
+  "menu",
+  "table of contents",
+  "toc",
+  "authors",
+  "breadcrumbs",
+  "sections",
+  "tags",
+  "categories",
+  "rss",
+  "github alert",
+  "syntax highlighting",
+  "code shortcode",
+  "figure shortcode",
+  "quote shortcode",
+  "youtube shortcode",
+  "facebook sharing",
+  "twitter sharing"
+]
+
+license = "MIT"
+licenselink = "https://github.com/babeneso/hugo-neso/blob/main/LICENSE"
+
+[author]
+    name = "babeneso"
+    homepage = "https://github.com/babeneso"
+
+[original]
+    author = "Aditya Telange"
+    homepage = "https://github.com/adityatelange"
+    repo = "https://github.com/adityatelange/hugo-PaperMod"

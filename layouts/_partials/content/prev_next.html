@@ -1,0 +1,48 @@
+{{- $uiIcons := partialCached "_funcs/get-ui-icons.html" . }}
+
+{{- if or (.PrevInSection) (.NextInSection) }}
+    <nav class="mb-r-lg last:mb-0 flex flex-col md:flex-row justify-between gap-3">
+        {{- with .NextInSection }}
+            <div class="basis-1/2 shrink-1 grow-1 relative isolate bg-neso-bg2 [&:hover_svg]:stroke-neso-splash rounded-xl p-3 text-start">
+                <span class="flex flex-nowrap justify-start items-center gap-1 md:gap-0.25 mb-1 text-neso-fg3">
+                    <svg class="size-5 shrink-0 md:hidden stroke-2 stroke-current fill-none" aria-hidden="true">
+                        <use href="{{ $uiIcons.RelPermalink }}#chevron-up" />
+                    </svg>
+                    <svg class="size-5 shrink-0 hidden md:ltr:block! md:rtl:hidden! stroke-2 stroke-current fill-none" aria-hidden="true">
+                        <use href="{{ $uiIcons.RelPermalink }}#chevron-left" />
+                    </svg>
+                    <svg class="size-5 shrink-0 hidden md:ltr:hidden! md:rtl:block! stroke-2 stroke-current fill-none" aria-hidden="true">
+                        <use href="{{ $uiIcons.RelPermalink }}#chevron-right" />
+                    </svg>
+                    <span class="text-sm font-medium uppercase tracking-wider">
+                        {{- i18n "next_entry" | default "Next" -}}
+                    </span>
+                </span>
+                <a class="ui-link md:ps-1 hyphens-auto text-lg font-medium after:content-[''] after:absolute after:inset-0 z-5" href="{{ .RelPermalink }}">
+                    {{- .Name -}}
+                </a>
+            </div>
+        {{- end }}
+        {{- with .PrevInSection }}
+            <div class="basis-1/2 shrink-1 grow-1 relative isolate bg-neso-bg2 [&:hover_svg]:stroke-neso-splash rounded-xl p-3 text-start md:text-end">
+                <span class="flex flex-nowrap justify-start md:justify-end items-center gap-1 md:gap-0.25 mb-1 text-neso-fg3">
+                    <span class="text-sm font-medium uppercase tracking-wider">
+                        {{- i18n "prev_entry" | default "Prev" -}}
+                    </span>
+                    <svg class="size-5 shrink-0 md:hidden order-first stroke-2 stroke-current fill-none" aria-hidden="true">
+                        <use href="{{ $uiIcons.RelPermalink }}#chevron-down" />
+                    </svg>
+                    <svg class="size-5 shrink-0 hidden md:ltr:block md:rtl:hidden stroke-2 stroke-current fill-none" aria-hidden="true">
+                        <use href="{{ $uiIcons.RelPermalink }}#chevron-right" />
+                    </svg>
+                    <svg class="size-5 shrink-0 hidden md:ltr:hidden md:rtl:block stroke-2 stroke-current fill-none" aria-hidden="true">
+                        <use href="{{ $uiIcons.RelPermalink }}#chevron-left" />
+                    </svg>
+                </span>
+                <a class="ui-link md:pe-1 hyphens-auto text-lg font-medium after:content-[''] after:absolute after:inset-0 z-5" href="{{ .RelPermalink }}">
+                    {{- .Name -}}
+                </a>
+            </div>
+        {{- end }}
+    </nav>
+{{- end -}}

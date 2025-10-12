@@ -1,0 +1,41 @@
+{{- $result := transform.HighlightCodeBlock . }}
+{{- $out := $result.Wrapped }}
+
+{{- /* Fetch data-prompt safely without using isset on a possibly nil .Attributes */}}
+{{- $prompt := "" }}
+{{- $hasAttr := false }}
+{{- with .Attributes }}
+    {{- with index . "data-prompt" }}
+        {{- $prompt = printf "%v" . }}
+        {{- $hasAttr = true }}
+    {{- end }}
+{{- end }}
+
+{{- $val := lower $prompt }}
+{{- $isTrue  := or (eq $val "") (eq $val "true") (eq $val "1") (eq $val "yes") (eq $val "on") }}
+{{- $isFalse := or (eq $val "false") (eq $val "0") (eq $val "no") (eq $val "off") }}
+{{- $hasPrompt := and $hasAttr (not $isFalse) }}
+
+{{- $sym := "$" }}
+{{- if and $hasAttr (not (or $isTrue $isFalse)) }}
+    {{- $sym = $prompt }}
+    {{- /* User-defined symbol */}}
+{{- end }}
+
+{{- $symHTML := $sym | htmlEscape }}
+{{- /* Escape to safe HTML text */}}
+
+{{- $symRepl := replace $symHTML "$" "$$" }}
+{{- /* For replaceRE: escape $ so it is not treated as a capture-group backreference */}}
+
+{{- if $hasPrompt }}
+    {{- if findRE `<span class="ln">` $out }}
+    {{- /* linenos=inline */}}
+        {{- $out = replaceRE `<span class="ln">\d+</span>` (printf `<span class="ln">%s</span>` $symRepl) $out }}
+    {{- else if findRE `<span class="lnt">` $out }}
+    {{- /* linenos=table */}}
+        {{- $out = replaceRE `<span class="lnt">\d+` (printf `<span class="lnt">%s` $symRepl) $out }}
+    {{- end }}
+{{- end }}
+
+{{- $out | safeHTML -}}

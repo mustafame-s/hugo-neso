@@ -1,0 +1,38 @@
+{{- define "main" }}
+
+<section class="layout last:expansive">
+
+    {{- partial "content/header.html" . }}
+
+    {{- if .Content }}
+        <div class="cnt not-last:mb-r-xl">
+            {{- if not site.Params.neso.page.disable_heading_links }}
+                {{- partial "content/heading_links.html" .Content }}
+            {{- else }}
+                {{ .Content }}
+            {{- end }}
+        </div>
+    {{- end }}
+
+    <ul class="terms-tags flex flex-wrap gap-3">
+        {{- $type := .Type }}
+        {{- range $key, $value := .Data.Terms.Alphabetical }}
+            {{- $name := .Name }}
+            {{- $count := .Count }}
+            {{- with site.GetPage (printf "/%s/%s" $type $name) }}
+                <li class="contents">
+                    <a class="btn flex flex-nowrap gap-1" href="{{ .RelPermalink }}">
+                        {{- .Name -}}
+                        <span class="align-super text-sm text-neso-fg3 font-medium">
+                            <span class="sr-only">{{- i18n "entry_count" | default "Entry count: " -}}</span>
+                            {{- $count -}}
+                        </span>
+                    </a>
+                </li>
+            {{- end }}
+        {{- end }}
+    </ul>
+
+</section>
+
+{{- end -}}

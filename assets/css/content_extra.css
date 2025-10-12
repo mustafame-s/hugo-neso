@@ -1,0 +1,241 @@
+/* Content Enhancements */
+
+/* Heading links */
+
+h1,h2,h3,h4,h5,h6 {
+
+    .heading-link {
+        @apply
+            inline-block align-baseline
+            no-underline
+            font-mono font-semibold text-neso-fg3 select-none opacity-0 pointer-events-none px-2
+            transition-opacity duration-200
+        ;
+
+        &:hover,
+        &:focus-visible {
+            @apply text-neso-splash;
+        }
+    }
+
+    &:hover,
+    &:focus-within {
+        .heading-link {
+            @apply opacity-100 pointer-events-auto;
+        }
+    }
+}
+
+
+/* External links (links renderhook) */
+
+.ext-link:not(
+    :has(img, svg, picture, video, canvas, figure, iframe, object, embed)
+    ) {
+
+    --link-icon: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>');
+
+    @apply inline-flex flex-wrap gap-1 items-center;
+
+    &::after {
+        @apply
+            content-['']
+            transition
+            size-[1em] grow-0 shrink-0 basis-[1em] bg-neso-fg3/64
+            mask-[var(--link-icon)] mask-no-repeat mask-center mask-size-[1em]
+        ;
+    }
+
+    &:hover::after {
+        @apply bg-neso-splash;
+    }
+}
+
+
+/* HTML <details> element */
+
+details {
+    margin-top: 1.25em;            /* 20/r16 */
+    margin-bottom: 1.25em;         /* 20/r16 */
+
+    --chev-icon: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>');
+
+    summary {
+        @apply flex gap-[.25em] items-center cursor-pointer list-none font-medium text-lg text-neso-fg2;
+
+        &::before {
+            @apply
+                content-['']
+                size-[1.25em] grow-0 shrink-0 basis-[1.25em] bg-neso-fg3
+                transition-transform duration-250
+                mask-[var(--chev-icon)] mask-no-repeat mask-center mask-size-[1.25em]
+            ;
+        }
+
+        &:hover, &:focus-visible {
+            @apply text-neso-fg1;
+
+            &::before {
+                @apply bg-neso-splash;
+            }
+        }
+        
+        :where(details[open]) > &::before {
+            @apply rotate-90 bg-neso-accent;
+        }
+    }
+}
+
+
+/* Footnotes */
+
+sup {
+
+    &:has(.footnote-ref) {
+        @apply ms-0.5;
+    }
+
+    .footnote-ref {
+        @apply no-underline text-neso-fg3;
+
+        &:hover,
+        &:focus-visible {
+            @apply text-neso-splash;
+        }
+    }
+}
+
+.footnotes {
+
+    hr {
+        @apply mb-[1.125em] border-neso-deco2;
+    }
+
+    ol {
+        @apply mb-0 ps-[1.625em] text-base font-normal text-neso-fg3;
+
+        li p {
+            @apply mt-[1em] mb-[1em];
+
+            .footnote-backref {
+                @apply inline-block align-middle no-underline text-neso-deco1;
+
+                &:hover,
+                &:focus-visible {
+                    @apply text-neso-splash;
+                }
+            }
+        }
+    }
+}
+
+
+/* Github-style alerts (blockquote renderhook) */
+
+blockquote.alert {
+
+    quotes: none;
+    font-style: normal;
+
+    --alert-note-color:      var(--color-neso-note);
+    --alert-tip-color:       var(--color-neso-okay);
+    --alert-important-color: #cb44e9;
+    --alert-warning-color:   var(--color-neso-ding);
+    --alert-caution-color:   var(--color-neso-oops);
+
+    --alert-icon-note: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8Zm8-6.5a6.5 6.5 0 1 0 0 13 6.5 6.5 0 0 0 0-13ZM6.5 7.75A.75.75 0 0 1 7.25 7h1a.75.75 0 0 1 .75.75v2.75h.25a.75.75 0 0 1 0 1.5h-2a.75.75 0 0 1 0-1.5h.25v-2h-.25a.75.75 0 0 1-.75-.75ZM8 6a1 1 0 1 1 0-2 1 1 0 0 1 0 2Z"></path></svg>');
+    
+    --alert-icon-tip: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M8 1.5c-2.363 0-4 1.69-4 3.75 0 .984.424 1.625.984 2.304l.214.253c.223.264.47.556.673.848.284.411.537.896.621 1.49a.75.75 0 0 1-1.484.211c-.04-.282-.163-.547-.37-.847a8.456 8.456 0 0 0-.542-.68c-.084-.1-.173-.205-.268-.32C3.201 7.75 2.5 6.766 2.5 5.25 2.5 2.31 4.863 0 8 0s5.5 2.31 5.5 5.25c0 1.516-.701 2.5-1.328 3.259-.095.115-.184.22-.268.319-.207.245-.383.453-.541.681-.208.3-.33.565-.37.847a.751.751 0 0 1-1.485-.212c.084-.593.337-1.078.621-1.489.203-.292.45-.584.673-.848.075-.088.147-.173.213-.253.561-.679.985-1.32.985-2.304 0-2.06-1.637-3.75-4-3.75ZM5.75 12h4.5a.75.75 0 0 1 0 1.5h-4.5a.75.75 0 0 1 0-1.5ZM6 15.25a.75.75 0 0 1 .75-.75h2.5a.75.75 0 0 1 0 1.5h-2.5a.75.75 0 0 1-.75-.75Z"></path></svg>');
+    
+    --alert-icon-important: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M0 1.75C0 .784.784 0 1.75 0h12.5C15.216 0 16 .784 16 1.75v9.5A1.75 1.75 0 0 1 14.25 13H8.06l-2.573 2.573A1.458 1.458 0 0 1 3 14.543V13H1.75A1.75 1.75 0 0 1 0 11.25Zm1.75-.25a.25.25 0 0 0-.25.25v9.5c0 .138.112.25.25.25h2a.75.75 0 0 1 .75.75v2.19l2.72-2.72a.749.749 0 0 1 .53-.22h6.5a.25.25 0 0 0 .25-.25v-9.5a.25.25 0 0 0-.25-.25Zm7 2.25v2.5a.75.75 0 0 1-1.5 0v-2.5a.75.75 0 0 1 1.5 0ZM9 9a1 1 0 1 1-2 0 1 1 0 0 1 2 0Z"></path></svg>');
+
+    --alert-icon-warning: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M6.457 1.047c.659-1.234 2.427-1.234 3.086 0l6.082 11.378A1.75 1.75 0 0 1 14.082 15H1.918a1.75 1.75 0 0 1-1.543-2.575Zm1.763.707a.25.25 0 0 0-.44 0L1.698 13.132a.25.25 0 0 0 .22.368h12.164a.25.25 0 0 0 .22-.368Zm.53 3.996v2.5a.75.75 0 0 1-1.5 0v-2.5a.75.75 0 0 1 1.5 0ZM9 11a1 1 0 1 1-2 0 1 1 0 0 1 2 0Z"></path></svg>');
+
+    --alert-icon-caution: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M2.344 2.343h-.001a8 8 0 0 1 11.314 11.314A8.002 8.002 0 0 1 .234 10.089a8 8 0 0 1 2.11-7.746Zm1.06 10.253a6.5 6.5 0 1 0 9.108-9.275 6.5 6.5 0 0 0-9.108 9.275ZM6.03 4.97 8 6.94l1.97-1.97a.749.749 0 0 1 1.275.326.749.749 0 0 1-.215.734L9.06 8l1.97 1.97a.749.749 0 0 1-.326 1.275.749.749 0 0 1-.734-.215L8 9.06l-1.97 1.97a.749.749 0 0 1-1.275-.326.749.749 0 0 1 .215-.734L6.94 8 4.97 6.03a.751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018Z"></path></svg>');
+
+    &.alert-note {
+        border-inline-start-color: var(--alert-note-color);
+        .alert-title {
+            color: var(--alert-note-color);
+            &::before {
+                mask: var(--alert-icon-note) no-repeat center / 1em 1em;
+            }
+        }
+    }
+
+    &.alert-tip {
+        border-inline-start-color: var(--alert-tip-color);
+        .alert-title {
+            color: var(--alert-tip-color);
+            &::before {
+                mask: var(--alert-icon-tip) no-repeat center / 1em 1em;
+            }
+        }
+    }
+
+    &.alert-important {
+        border-inline-start-color: var(--alert-important-color);
+        .alert-title {
+            color: var(--alert-important-color);
+            &::before {
+                mask: var(--alert-icon-important) no-repeat center / 1em 1em;
+            }
+        }
+    }
+
+    &.alert-warning {
+        border-inline-start-color: var(--alert-warning-color);
+        .alert-title {
+            color: var(--alert-warning-color);
+            &::before {
+                mask: var(--alert-icon-warning) no-repeat center / 1em 1em;
+            }
+        }
+    }
+
+    &.alert-caution {
+        border-inline-start-color: var(--alert-caution-color);
+        .alert-title {
+            color: var(--alert-caution-color);
+            &::before {
+                mask: var(--alert-icon-caution) no-repeat center / 1em 1em;
+            }
+        }
+    }
+
+    > p:last-of-type {
+        margin-bottom: 0;
+    }
+
+    .alert-title {
+        display: flex;
+        align-items: center;
+        gap: .5em;
+        font-size: .875em;
+        font-weight: 500;
+        margin-bottom: .375em;
+
+        + p {
+            margin-top: 0;
+        }
+
+        p:last-of-type::after {
+            content: "";
+        }
+
+        &::before {
+            content: "";
+            width: 1em;
+            height: 1em;
+            flex: 0 0 1em;
+            background: currentColor;
+        }
+    }
+}
+
+.instagram-media,
+.twitter-tweet {
+    margin-top: 1.25em !important;            /* 20/r16 */
+    margin-bottom: 1.25em !important;         /* 20/r16 */
+    margin-inline: auto !important;
+}

@@ -1,0 +1,25 @@
+{{- define "main" }}
+
+<section class="layout last:expansive">
+
+    {{- partial "content/header.html" . }}
+
+    {{- if .Content }}
+        <div class="cnt not-last:mb-r-xl">
+            {{- if not site.Params.neso.page.disable_heading_links }}
+                {{- partial "content/heading_links.html" .Content }}
+            {{- else }}
+                {{ .Content }}
+            {{- end }}
+        </div>
+    {{- end }}
+
+    <div id="searchbox">
+        <input id="search_input" autofocus placeholder="{{ site.Params.neso.search.input_placeholder | default "Type to start search…" }}"
+            aria-label="Search" type="search" autocomplete="off" maxlength="64">
+        <ul id="search_results" aria-label="Search results"></ul>
+    </div>
+
+</section>
+
+{{- end -}}

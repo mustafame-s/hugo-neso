@@ -1,0 +1,91 @@
+{{- /*
+    Modified from Hugo embedded template:
+    https://github.com/gohugoio/hugo/blob/master/tpl/tplimpl/embedded/templates/_partials/_funcs/get-page-images.html
+
+    Integrates the theme's extra image configuration parameters:
+    .Params.neso.cover.image
+    site.Params.neso.branding.og_image
+    so OG and Schema image pickers can prioritize them.
+*/}}
+
+{{- $brandingImgs := partialCached "_funcs/get-branding-assets.html" . }}
+
+{{- $imgs      := slice }}
+{{- $imgParams := .Params.images }}
+{{- $resources := .Resources.ByType "image" }}
+{{- $cover     := .Params.neso.cover.image }}
+{{- $siteOg    := index $brandingImgs "og_image" }}
+
+
+{{- /* PART I. Handle the case where the Front Matter does not provide images. */}}
+
+{{- if and (not $cover) (not $imgParams) }}
+
+    {{- $featured := $resources.GetMatch "*feature*" }}
+    {{- if not $featured }}
+        {{ $featured = $resources.GetMatch "{*cover*,*thumbnail*}" }}
+    {{- end }}
+
+    {{- with $featured }}
+    {{- /* look for plausible assets in the page bundle by filename; if found, we're done. */}}
+        {{- $imgs = $imgs | append (dict
+            "Image" .
+            "RelPermalink" .RelPermalink
+            "Permalink" .Permalink) }}
+    {{- else }}
+    {{- /* worst case: the page has no suitable image; fall back to site-wide defaults. append to $imgParams for later processing. */}}
+        {{- $imgParams = slice }}
+        {{- with $siteOg }}
+            {{- $imgParams = $imgParams | append . }}
+        {{- end }}
+        {{- with site.Params.images }}
+            {{- $imgParams = $imgParams | append (index . 0) }}
+        {{- end }}
+    {{- end }}
+
+{{- end }}
+
+
+{{- /* PART II. If the Front Matter provides images (cover, .Params.images, or both), push them into $imgParams for later processing. */}}
+
+{{- with $cover }}
+{{- /* ensure the cover is prioritized regardless */}}
+    {{- if $imgParams }}
+        {{- $imgParams = (slice .) | append $imgParams }}
+    {{- else }}
+        {{- $imgParams = slice . }}
+    {{- end }}
+{{- end }}
+
+
+{{- /* PART III. If PART I didn't populate $imgs, $imgParams is now prepared as a substitute; resolve URLs below. */}}
+
+{{- range $imgParams }}
+    {{- $img := . }}
+    {{- $url := urls.Parse $img }}
+    {{- if eq $url.Scheme "" }}
+    {{- /* internal image */}}
+        {{- with $resources.GetMatch $img }}
+        {{- /* page-bundle resource */}}
+            {{- $imgs = $imgs | append (dict
+                "Image" .
+                "RelPermalink" .RelPermalink
+                "Permalink" .Permalink)
+            }}
+        {{- else }}
+        {{- /* global resource */}}
+            {{- $imgs = $imgs | append (dict
+                "RelPermalink" (relURL $img)
+                "Permalink" (absURL $img))
+            }}
+        {{- end }}
+    {{- else }}
+        {{- /* external image */}}
+        {{- $imgs = $imgs | append (dict
+            "RelPermalink" $img
+            "Permalink" $img)
+        }}
+    {{- end }}
+{{- end }}
+
+{{- return $imgs -}}

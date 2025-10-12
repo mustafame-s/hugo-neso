@@ -1,0 +1,82 @@
+{{- with .ctx }}
+
+    {{- $loading       := cond $.IsSingle "eager" "lazy" }}
+    {{- $loadingHero   := cond $.isHero   "eager" "lazy" }}
+    {{- $addLink       := (and site.Params.neso.page.full_size_cover_image_link $.IsSingle) }}
+    {{- $prod          := hugo.IsProduction }}
+    {{- $alt           := (.Params.neso.cover.alt_text | default .Params.neso.cover.caption | plainify) }}
+    {{- $responsiveOff := site.Params.neso.list.disable_responsive_cover_image }}
+
+    {{- $pageBundleCover := (.Resources.ByType "image").GetMatch (printf "*%s*" (.Params.neso.cover.image)) }}
+    {{- $globalResourcesCover := (resources.ByType "image").GetMatch (printf "*%s*" (.Params.neso.cover.image)) }}
+    {{- /* TODO: copy global resource to output directory and apply optional fingerprint */}}
+    {{- $cover := (or $pageBundleCover $globalResourcesCover) }}
+
+    {{- $sizes := (slice "540" "720" "1080" "1440" "1920") }}
+    {{- $processableFormats := (slice "jpg" "jpeg" "png" "tif" "bmp" "gif") }}
+    {{- if hugo.IsExtended }}
+        {{- $processableFormats = $processableFormats | append "webp" }}
+    {{- end }}
+
+    {{- $imgdl := (.Params.neso.cover.image) | absURL }}
+    {{- if $cover }}
+        {{- $imgdl = $cover.Permalink }}
+    {{- end }}
+
+    {{- if $addLink }}
+        <a href="{{- $imgdl -}}" target="_blank" rel="noopener noreferrer">
+    {{- end }}
+
+    {{- if $cover }}
+    {{- /* i.e. it is present in page bundle */}}
+        {{- if (and (in $processableFormats $cover.MediaType.SubType) (not $responsiveOff) (eq $prod true)) }}
+            <img loading="{{ $loadingHero }}"
+                 {{- if $.isHero }}
+                 fetchpriority="high"
+                 {{- end }}
+                 srcset="
+                    {{- range $size := $sizes }}
+                        {{- if (ge $cover.Width $size) }}
+                            {{- printf "%s %s" (($cover.Resize (printf "%sx" $size)).Permalink) (printf "%sw," $size) }}
+                        {{- end }}
+                    {{- end }}
+                    {{- printf "%s %dw" ($cover.Permalink) ($cover.Width) }}"
+                 src="{{ $cover.Permalink }}"
+                 sizes="(min-width: 1024px) 980px, (min-width: 735px) 691px, 100vw"
+                 width="{{ $cover.Width }}" height="{{ $cover.Height }}"
+                 alt="{{ $alt }}">
+        {{- else }}
+        {{- /* Unprocessable image or responsive images disabled */}}
+            <img loading="{{ $loadingHero }}"
+                 {{- if $.isHero }}
+                 fetchpriority="high"
+                 {{- end }}
+                 src="{{ $imgdl }}"
+                 width="1200" height="630"
+                 alt="{{ $alt }}">
+        {{- end }}
+
+    {{- else }}
+    {{- /* For absolute urls and external links, no img processing here */}}
+        <img loading="{{ $loadingHero }}"
+             {{- if $.isHero }}
+             fetchpriority="high"
+             {{- end }}
+             src="{{ $imgdl }}"
+             width="1200" height="630"
+             alt="{{ $alt }}">
+
+    {{- end }}
+
+    {{- if $addLink }}
+        </a>
+    {{- end }}
+
+    {{- /* image caption */}}
+    {{- if $.IsSingle }}
+        {{- with .Params.neso.cover.caption }}
+            <figcaption class="mt-2 text-center text-neso-fg3">{{- . | markdownify -}}</figcaption>
+        {{- end }}
+    {{- end }}
+
+{{- end }}

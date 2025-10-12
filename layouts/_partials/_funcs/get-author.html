@@ -1,0 +1,17 @@
+{{- /* Front matter author has priority; fallback to site-level author */}}
+{{- $fmAuthor   := .Params.neso.author }}
+{{- $siteAuthor := site.Params.neso.seo.site_author }}
+{{- $rawAuthor  := $fmAuthor | default $siteAuthor }}
+
+{{- /* Normalize to a slice of strings */}}
+{{- $type    := printf "%T" $rawAuthor }}
+{{- $authors := slice }}
+{{- if eq $type "string" }}
+    {{- $authors = slice (printf "%v" $rawAuthor) }}
+{{- else if eq $type "[]string" }}
+    {{- $authors = $rawAuthor }}
+{{- else if eq $type "[]interface {}" }}
+    {{- $authors = apply $rawAuthor "printf" "%v" "." }}
+{{- end }}
+
+{{- return $authors -}}

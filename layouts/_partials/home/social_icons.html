@@ -1,0 +1,46 @@
+{{- $featureItems := int (site.Params.neso.home.list.featured_entries_limit | default 0) }}
+{{- $showList     := gt $featureItems 0 }}
+
+{{- $jc := "justify-start" }}
+{{- if reflect.IsMap . }}
+    {{- with index . "align" }}
+        {{- if eq . "center" }}
+            {{- $jc = "justify-center" }}
+        {{- else if or (eq . "end") (eq . "right") }}
+            {{- $jc = "justify-end" }}
+        {{- else if or (eq . "start") (eq . "left") }}
+            {{- $jc = "justify-start" }}
+        {{- end }}
+    {{- end }}
+{{- end }}
+
+{{- $links    := site.Params.neso.social.links | default (slice) }}
+{{- $hasLinks := gt (len $links) 0 }}
+{{- $rss      := site.Home.OutputFormats.Get "rss" }}
+{{- $showRSS  := and (not $showList) $rss }}
+
+{{- $uiIcons := partialCached "_funcs/get-ui-icons.html" . }}
+
+{{- if or $hasLinks $showRSS }}
+    <ul class="not-last:mb-r-lg flex flex-wrap {{ $jc }} gap-3">
+        {{- if $showRSS }}
+            <li class="contents [&_svg]:size-7">
+                <a href="{{ $rss.RelPermalink }}"
+                   title="RSS" aria-label="RSS">
+                    <svg class="stroke-2 stroke-current fill-none">
+                        <use href="{{ $uiIcons.RelPermalink }}#rss" />
+                    </svg>
+                </a>
+            </li>
+        {{- end }}
+        {{- range $links }}
+            <li class="contents [&_svg]:size-7">
+                <a href="{{ trim .url " " | safeURL }}"
+                   title="{{ (.title | default .name) | title }}"
+                   target="_blank" rel="noopener noreferrer me">
+                    {{- partial "home/svg.html" . }}
+                </a>
+            </li>
+        {{- end }}
+    </ul>
+{{- end -}}

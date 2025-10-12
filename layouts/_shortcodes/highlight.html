@@ -1,0 +1,27 @@
+{{- /*
+    Modified from Hugo embedded template:
+    https://gohugo.io/shortcodes/highlight/
+    https://github.com/gohugoio/hugo/blob/master/tpl/tplimpl/embedded/templates/_shortcodes/highlight.html
+
+    add `chroma` class to rendered <code> element.
+*/}}
+
+{{- $lang := .Get 0 }}
+{{- $opts := "" }}
+{{- if eq (len .Params) 2 }}
+    {{- $opts = .Get 1 }}
+{{- end }}
+{{- $src := trim .InnerDeindent "\n\r" -}}
+
+{{- $html := highlight $src $lang $opts -}}
+
+{{/* 行內模式時，為 <code> 補上 `chroma` CSS class */}}
+{{- if findRE `(^|[\s,])hl_inline\s*=\s*true($|[\s,])` $opts }}
+    {{- if findRE `<code[^>]*\sclass="` $html }}
+        {{- $html = replaceRE `<code(\s+class=")` `<code class="chroma ` $html }}
+    {{- else }}
+        {{- $html = replaceRE `<code>` `<code class="chroma">` $html }}
+    {{- end }}
+{{- end }}
+
+{{- $html | safeHTML -}}

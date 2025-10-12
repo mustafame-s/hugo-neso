@@ -1,0 +1,19 @@
+{{- define "main" }}
+
+<section class="layout last:expansive flex  justify-center items-center">
+
+<div class="text-center mb-r-xl">
+    <h1 class="mb-r-md text-xl md:text-2xl text-neso-fg1">
+        The page you requested cannot be found.
+    </h1>
+    <p class="mb-r-xl text-lg">
+        <a href="{{ .Site.Home.RelPermalink }}">
+            Return to the home page
+        </a>
+    </p>
+    <p class="text-sm text-neso-fg3">error code: <code>404</code></p>
+</div>
+
+</section>
+
+{{- end -}}

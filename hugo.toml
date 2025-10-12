@@ -1,0 +1,117 @@
+[module]
+  [module.hugoVersion]
+    extended = true
+    min = "0.150.0"
+
+[params]
+  [params.neso]
+    time_format                        = "January 2, 2006"
+    disable_responsive_menu            = false
+    ext_link_indicator                 = false
+    ext_link_no_opener_referrer        = false
+    ext_link_new_window                = false
+    show_full_content_in_rss           = false
+    archive_includes_all_sections      = false
+    disable_scroll_to_top              = false
+    footer_text                        = ""
+    hide_copyright                     = false
+    hide_footer                        = false
+    force_color_scheme                 = false
+    display_short_lang_name            = false
+    support_theme_author               = true
+    [params.neso.branding]
+      logo_text                        = ""
+      hide_logo_text                   = false
+      logo_image                       = ""
+      logo_image_dark                  = ""
+      logo_image_width                 = ""
+      logo_image_height                = ""
+      og_image                         = ""
+      favicon_ico                      = ""
+      favicon_svg                      = ""
+      apple_touch_icon                 = ""
+      pwa_short_title                  = ""
+      pwa_theme_color_light            = ""
+      pwa_theme_color_dark             = ""
+      pwa_icon_svg                     = ""
+      pwa_icon_192                     = ""
+      pwa_icon_512                     = ""
+      pwa_icon_maskable_svg            = ""
+      pwa_icon_maskable_192            = ""
+      pwa_icon_maskable_512            = ""
+    #[params.neso.social]
+      #[[params.neso.social.links]]
+        #name                           = "Github"
+        #url                            = "https://github.com/"
+    [params.neso.home]
+      display_mode                     = "profile"
+      [params.neso.home.list]
+        featured_entries_limit         = 0
+        hide_view_archives_cta         = false
+      [params.neso.home.profile]
+        avatar_image                   = ""
+        avatar_image_alt_text          = ""
+        avatar_image_size              = ""
+        avatar_image_size_sm           = ""
+        #[[params.neso.home.profile.link_btns]]
+          #label                        = "Github"
+          #url                          = "https://github.com/"
+    [params.neso.list]
+      provide_rss_for_each_list        = false
+      prominent_first_entry            = false
+      hide_page_nums                   = false
+      hide_summary                     = false
+      hide_cover_image                 = false
+      disable_responsive_cover_image   = false
+    [params.neso.page]
+      ext_link_indicator               = false
+      ext_link_no_opener_referrer      = false
+      ext_link_new_window              = false
+      show_breadcrumbs                 = false
+      hide_description_in_single       = false
+      hide_metadata                    = false
+      show_reading_time                = false
+      show_word_count                  = false
+      show_author                      = false
+      show_canonical_link              = false
+      canonical_link_text              = ""
+      full_size_cover_image_link       = false
+      show_toc                         = false
+      toc_expanded                     = false
+      disable_heading_links            = false
+      show_prev_next                   = false
+      show_share                       = false
+      share_providers                  = []
+      show_content_footer              = true
+      enable_comments                  = false
+      hide_copy_code_button            = false
+    [params.neso.seo]
+      block_indexing                   = false
+      site_description                 = ""
+      site_keywords                    = []
+      site_author                      = []
+      [params.neso.seo.schema]
+        publisher_type                 = "Person"
+        same_as                        = []
+      [params.neso.seo.verification]
+        google                         = ""
+        bing                           = ""
+        yandex                         = ""
+        naver                          = ""
+    [params.neso.search]
+      is_case_sensitive                = false
+      include_score                    = false
+      include_matches                  = false
+      min_match_char_length            = 1
+      should_sort                      = true
+      find_all_matches                 = false
+      keys                             = ["title", "permalink", "summary", "content"]
+      ignore_location                  = true
+      location                         = 0
+      threshold                        = 0.3
+      distance                         = 100
+      limit                            = 10
+      input_placeholder                = "Title or keyword..."
+    [params.neso.assets]
+      output_dir                       = ""
+      disable_fingerprinting           = false

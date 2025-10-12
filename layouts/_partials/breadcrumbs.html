@@ -1,0 +1,39 @@
+{{- $siteShow := site.Params.neso.show_breadcrumbs }}
+{{- $pageDisable := .Params.neso.disable_breadcrumbs }}
+
+{{- if and $siteShow (not $pageDisable) (not .IsHome) }}
+
+    {{- $uiIcons := partialCached "_funcs/get-ui-icons.html" . }}
+
+    <nav class="mb-r-sm" aria-label="{{ i18n "breadcrumbs" | default "Breadcrumbs" }}">
+        <ol class="flex flex-wrap">
+            <li class="inline-flex flex-nowrap items-center gap-1 me-1 last:me-0">
+                <a class="ui-link text-neso-fg3 hover:text-neso-fg1 focus-visible:text-neso-fg1" href="{{ site.Home.RelPermalink }}">
+                    {{ i18n "home" | default "Home" }}
+                </a>
+                <svg class="size-4.5 shrink-0 stroke-3 stroke-neso-deco1 fill-none rtl:hidden" aria-hidden="true">
+                    <use href="{{ $uiIcons.RelPermalink }}#chevron-right" />
+                </svg>
+                <svg class="size-4.5 shrink-0 stroke-3 stroke-neso-deco1 fill-none ltr:hidden" aria-hidden="true">
+                    <use href="{{ $uiIcons.RelPermalink }}#chevron-left" />
+                </svg>
+            </li>
+            {{- range $i, $page := .Ancestors.Reverse }}
+                {{- if not $page.IsHome }}
+                    <li class="inline-flex flex-nowrap items-center gap-1 me-1 last:me-0">
+                        <a class="ui-link text-neso-fg3 hover:text-neso-fg1 focus-visible:text-neso-fg1" href="{{ $page.RelPermalink }}">
+                            {{ $page.Title | default $page.Name }}
+                        </a>
+                        <svg class="size-4.5 shrink-0 stroke-3 stroke-neso-deco1 fill-none rtl:hidden" aria-hidden="true">
+                            <use href="{{ $uiIcons.RelPermalink }}#chevron-right" />
+                        </svg>
+                        <svg class="size-4.5 shrink-0 stroke-3 stroke-neso-deco1 fill-none ltr:hidden" aria-hidden="true">
+                            <use href="{{ $uiIcons.RelPermalink }}#chevron-left" />
+                        </svg>
+                    </li>
+                {{- end }}
+            {{- end }}
+        </ol>
+    </nav>
+
+{{- end -}}

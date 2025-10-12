@@ -1,0 +1,76 @@
+{{- define "main" }}
+
+{{- $uiIcons := partialCached "_funcs/get-ui-icons.html" . }}
+
+<section class="layout last:expansive">
+
+{{- partial "content/header.html" . }}
+
+{{- if .Content }}
+    <div class="cnt mb-r-xl last:mb-0">
+        {{- if not site.Params.neso.page.disable_heading_links }}
+            {{- partial "content/heading_links.html" .Content }}
+        {{- else }}
+            {{ .Content }}
+        {{- end }}
+    </div>
+{{- end }}
+
+{{- $pages := where site.RegularPages "Section" "in" site.Params.mainSections }}
+{{- if site.Params.neso.archive_includes_all_sections }}
+    {{- $pages = site.RegularPages }}
+{{- end }}
+
+{{- range $pages.GroupByPublishDate "2006" }}
+    {{- if ne .Key "0001" }}
+        <div class="not-last-of-type:pb-r-xl not-last-of-type:mb-r-xl not-last-of-type:border-b not-last-of-type:border-neso-deco3">
+            {{- $year := replace .Key "0001" "" }}
+            <h2 class="flex gap-1 mb-r-lg text-2xl md:text-3xl" id="{{ $year }}">
+                <a class="font-bold ui-link" href="#{{ $year }}">
+                    {{- $year -}}
+                </a>
+                <span class="text-sm text-neso-fg3 font-medium"><span class="sr-only">{{- i18n "entry_count" | default "Entry count: " -}}</span>{{- len .Pages -}}</span>
+            </h2>
+            {{- range .Pages.GroupByDate "January" }}
+                <div class="flex flex-col md:flex-row items-start not-last-of-type:mb-r-xl">
+                    <h3 class="flex gap-1 w-full md:w-[180px] shrink-0 grow-0 mb-r-lg text-xl md:text-2xl" id="{{ $year }}-{{ .Key }}">
+                        <a class="font-semibold ui-link" href="#{{ $year }}-{{ .Key }}">
+                            {{- .Key -}}
+                        </a>
+                        <span class="text-sm text-neso-fg3 font-medium"><span class="sr-only">{{- i18n "entry_count" | default "Entry count: " -}}</span>{{- len .Pages -}}</span>
+                    </h3>
+                    <ol class="w-full">
+                        {{- range .Pages }}
+                            {{- if eq .Kind "page" }}
+                                <li class="isolate relative mb-r-lg last:mb-0">
+                                    <h3 class="flex items-center text-lg md:text-xl mb-1 last:mb-0">
+                                        {{ if .Draft -}}
+                                            <span class="flex order-last items-center gap-1
+                                                         ms-auto px-2 py-0.5
+                                                         text-neso-fg3 bg-neso-bg2 border-1 border-neso-deco2 rounded-md">
+                                                <svg class="size-4 stroke-2 stroke-current fill-none" aria-hidden="true">
+                                                    <use href="{{ $uiIcons.RelPermalink }}#feather" />
+                                                </svg>
+                                                <span class="font-medium hidden sm:inline text-sm">{{ i18n "draft" | default "Draft" }}</span>
+                                            </span>
+                                        {{ end -}}
+                                        <a class="ui-link font-semibold hover:text-neso-splash after:absolute after:inset-0 after:z-5" aaria-label="{{ i18n "entry_link_aria" (dict "Title" (.Title | plainify)) | default (printf "Read “%s”" (.Title | plainify)) }}" href="{{ .RelPermalink }}">
+                                            {{- .Title }}
+                                        </a>
+                                    </h3>
+                                    <div class="flex flex-wrap items-baseline text-neso-fg3 text-sm md:text-base font-[350]">
+                                        {{- partial "content/metadata.html" . }}
+                                    </div>
+                                </li>
+                            {{- end }}
+                        {{- end }}
+                    </ol>
+                </div>
+            {{- end }}
+        </div>
+    {{- end }}
+{{- end }}
+
+</section>
+
+{{- end -}}

@@ -1,0 +1,80 @@
+alert_caution:
+    other: "Caution"
+
+alert_important:
+    other: "Important"
+
+alert_note:
+    other: "Note"
+
+alert_tip:
+    other: "Tip"
+
+alert_warning:
+    other: "Warning"
+
+author:
+    one: "Author: "
+    other: "Authors: "
+
+breadcrumbs:
+    other: "Breadcrumbs"
+
+code_copied:
+    other: "📋 Copied!"
+
+code_copy:
+    other: "Copy"
+
+draft:
+    other: "Draft"
+
+entry_count:
+    other: "Entry count: "
+
+entry_link_aria:
+    other: "Read “{{ .Title }}”"
+
+feature_entries:
+    other: "Highlights"
+
+heading_link_label:
+    other: "Link to this section"
+
+home:
+    other: "Home"
+
+next_entry:
+    other: "Newer"
+
+next_page:
+    other: "Next"
+
+prev_entry:
+    other: "Older"
+
+prev_page:
+    other: "Prev"
+
+read_time:
+    one: "Reading: 1 min"
+    other: "Reading: {{ .Count }} min"
+
+share_btn_aria:
+    other: "Share “{{ .Title }}” on {{ .Provider }}"
+
+share_btn_title:
+    other: "Share on {{ .Provider }}"
+
+toc:
+    other: "Table of Contents"
+
+translations:
+    other: "Translations:&nbsp;"
+
+view_archives:
+    other: "View Archives"
+
+words:
+    one: "word"
+    other: "{{ .Count }} words"

@@ -1,0 +1,282 @@
+{{- $brandingImgs := partialCached "_funcs/get-branding-assets.html" . }}
+
+<title>
+    {{- if .IsHome }}
+        {{- /* no page title to insert before the site name */}}
+    {{- else }}
+        {{- if .Title }}{{- .Title }} – {{ end }}
+    {{- end }}
+    {{- (site.Title | default site.Params.title) | plainify -}}
+</title>
+
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+
+{{- /* Get color scheme setting for later use */}}
+{{- $forceColorScheme := (site.Params.neso.force_color_scheme | default false) }}
+{{- if in (slice true "true") $forceColorScheme }}
+    {{- $forceColorScheme = "system" }}
+{{- end }}
+
+
+{{- $noindex := site.Params.neso.seo.block_indexing | default false }}
+{{- with .Params.neso }}
+    {{- with index . "block_indexing" }}
+        {{- $noindex = . }}
+    {{- end }}
+{{- end }}
+
+{{- if and hugo.IsProduction (not $noindex) }}
+    <meta name="robots" content="index, follow">
+{{- else }}
+    <meta name="robots" content="noindex, nofollow">
+{{- end }}
+
+
+{{- /* Description */}}
+{{ $head_desc := "" }}
+{{- if .IsHome }}
+    {{- with or site.Params.neso.seo.site_description site.Params.description .Description }}
+        {{- $head_desc = . }}
+    {{- end }}
+{{- else }}
+    {{- with .Description }}
+        {{- $head_desc = . }}
+    {{- else }}
+        {{- if .IsPage }}
+            {{- $head_desc = .Summary }}
+        {{- else }}
+            {{- with or site.Params.neso.seo.site_description site.Params.description }}
+                {{- $head_desc = . }}
+            {{- end }}
+        {{- end }}
+    {{- end }}
+{{- end }}
+
+{{- with $head_desc | plainify | htmlUnescape | strings.TrimSpace }}
+    <meta name="description" content="{{ . }}">
+{{- end }}
+
+
+{{- /* Author */}}
+{{- $authors := partial "_funcs/get-author.html" . }}
+{{- with $authors }}
+    <meta name="author" content="{{ delimit . ", " }}">
+{{- end }}
+
+{{- if .IsHome }}
+    {{- with site.Params.neso.seo.site_keywords }}
+        <meta name="keywords" content="
+            {{- range $i, $e := . }}
+                {{- if $i }}, {{ end }}
+                {{- $e }}
+            {{- end }}">
+    {{- end }}
+{{- else }}
+    <meta name="keywords" content="
+        {{- if .Params.keywords }}
+            {{- range $i, $e := .Params.keywords }}
+                {{- if $i }}, {{ end }}
+                {{- $e }}
+            {{- end }}
+        {{- else }}
+            {{- range $i, $e := .Params.tags }}
+                {{- if $i }}, {{ end }}
+                {{- $e }}
+            {{- end }}
+        {{- end -}}">
+{{- end }}
+
+
+{{- /* Browser UI */}}
+{{ with (or site.Params.neso.branding.pwa_short_title site.Params.neso.branding.logo_text site.Title site.Params.title) | plainify }}
+    <meta name="apple-mobile-web-app-title" content="{{ . }}">
+{{- end }}
+{{- with site.Params.neso.branding.pwa_theme_color_light }}
+    <meta name="theme-color" media="(prefers-color-scheme: light)" content="{{ site.Params.neso.branding.pwa_theme_color_light }}">
+{{- end }}
+{{- with site.Params.neso.branding.pwa_theme_color_dark }}
+    <meta name="theme-color" media="(prefers-color-scheme: dark)" content="{{ site.Params.neso.branding.pwa_theme_color_dark }}">
+{{- end }}
+
+{{- if eq $forceColorScheme "light" }}
+    <meta name="color-scheme" content="only light">
+{{- else if eq $forceColorScheme "dark" }}
+    <meta name="color-scheme" content="dark">
+{{- else if eq $forceColorScheme "system" }}
+    <meta name="color-scheme" content="light dark">
+{{- else }}
+    <meta name="color-scheme" content="normal">
+{{- end }}
+
+
+{{- /* Analytics Verifications */}}
+{{- with site.Params.neso.seo.verification.google }}
+    <meta name="google-site-verification" content="{{ . }}">
+{{- end }}
+{{- with site.Params.neso.seo.verification.bing }}
+    <meta name="msvalidate.01" content="{{ . }}">
+{{- end }}
+{{- with site.Params.neso.seo.verification.yandex }}
+    <meta name="yandex-verification" content="{{ . }}">
+{{- end }}
+{{- with site.Params.neso.seo.verification.naver }}
+    <meta name="naver-site-verification" content="{{ . }}">
+{{- end }}
+
+
+{{- if hugo.IsProduction }}
+    {{ partial "head/twitter_cards.html" . }}
+    {{ partial "head/opengraph.html" . }}
+    {{ partial "head/schema_json.html" . }}
+    {{ partial "google_analytics.html" . }}
+{{- end }}
+
+
+{{- if not $forceColorScheme }}
+    <script>
+        (() => {
+        'use strict'
+        const getStoredColorScheme = () => localStorage.getItem('pref-color')
+        const setStoredColorScheme = colorScheme => localStorage.setItem('pref-color', colorScheme)
+        const availableColorSchemes = new Set(['light', 'dark'])
+
+        const getPreferredColorScheme = () => {
+            const storedColorScheme = getStoredColorScheme()
+            if (storedColorScheme) { return storedColorScheme }
+
+            return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'
+        }
+
+        const setColorScheme = colorScheme => {
+            if (colorScheme === 'system') {
+                document.documentElement.setAttribute('data-color-scheme', (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'))
+            }
+            else { document.documentElement.setAttribute('data-color-scheme', colorScheme) }
+        }
+
+        setColorScheme(getPreferredColorScheme())
+
+        const showActiveColorScheme = (colorScheme, focus = false) => {
+            const colorSchemeControl = document.querySelector('.color-scheme-control')
+
+            if (!colorSchemeControl) { return }
+
+            const optionToActive = document.querySelector(`[data-color-scheme-option="${colorScheme}"]`)
+
+            document.querySelectorAll('[data-color-scheme-option]').forEach(element => {
+                element.classList.remove('active')
+                element.setAttribute('aria-checked', 'false')
+            })
+
+            optionToActive.classList.add('active')
+            optionToActive.setAttribute('aria-checked', 'true')
+
+            if (focus) { colorSchemeControl.focus() }
+        }
+
+        window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', () => {
+            const storedColorScheme = getStoredColorScheme()
+            if (!availableColorSchemes.has(storedColorScheme)) {
+                setColorScheme(getPreferredColorScheme())
+            }
+        })
+
+        window.addEventListener('DOMContentLoaded', () => {
+            showActiveColorScheme(getPreferredColorScheme())
+
+            document.querySelectorAll('[data-color-scheme-option]')
+            .forEach(toggle => {
+                toggle.addEventListener('click', () => {
+                    const colorScheme = toggle.getAttribute('data-color-scheme-option')
+                    setStoredColorScheme(colorScheme)
+                    setColorScheme(colorScheme)
+                    showActiveColorScheme(colorScheme, true)
+                })
+            })
+        })
+        })()
+    </script>
+
+{{- else if eq $forceColorScheme "system" }}
+    <script>
+        (() => {
+            'use strict'
+            const colorScheme = '{{ string $forceColorScheme }}';
+            const setColorScheme = colorScheme => {
+                document.documentElement.setAttribute('data-color-scheme', (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'))
+            }
+            setColorScheme(colorScheme)
+            window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', () => {
+                setColorScheme(colorScheme)
+            })
+        })()
+    </script>
+
+{{- else }}
+    <script>
+        (() => {
+            'use strict'
+            const colorScheme = '{{ string $forceColorScheme }}';
+            document.documentElement.setAttribute('data-color-scheme', colorScheme)
+        })()
+    </script>
+{{- end }}
+
+
+{{- /* Search */}}
+{{- if eq .Layout "search" }}
+    {{- $outDir     := site.Params.neso.assets.output_dir | default "assets" }}
+    {{- $license    := resources.Get "js/license.js" }}
+    {{- $fusejs     := resources.Get "js/fuse.basic.min.js" }}
+    {{- $search_ui  := resources.Get "js/search_ui.js"
+                     | js.Build (dict "params" (dict "fuseOpts" site.Params.neso.search))
+                     | resources.Minify }}
+    
+    {{- if not site.Params.neso.assets.disable_fingerprinting }}
+        {{- $search := (slice $license $fusejs $search_ui)
+                     | resources.Concat (path.Join $outDir "js/search.js")
+                     | fingerprint }}
+        <script defer crossorigin="anonymous" src="{{ $search.RelPermalink }}" integrity="{{ $search.Data.Integrity }}"></script>
+    {{- else }}
+        {{- $search := (slice $license $fusejs $search_ui)
+                     | resources.Concat (path.Join $outDir "js/search.js") }}
+        <script defer crossorigin="anonymous" src="{{ $search.RelPermalink }}"></script>
+    {{- end }}
+    {{- $json := .Parent.OutputFormats.Get "json" }}
+    {{- with $json }}
+        <link rel="preload" as="fetch" href="{{ .RelPermalink }}">
+    {{- end }}
+{{- end }}
+
+
+{{- /* Page URLs */}}
+<link rel="canonical" href="{{ .Permalink }}">
+{{- range .AllTranslations }}
+    <link rel="alternate" hreflang="{{ .Lang }}" href="{{ .Permalink }}">
+{{- end }}
+
+
+{{- /* RSS & JSON */}}
+{{- range .AlternativeOutputFormats }}
+    <link rel="{{ .Rel }}" type="{{ .MediaType.Type | html }}" href="{{ .Permalink | safeURL }}">
+{{- end }}
+
+
+{{- /* Favicons */}}
+<link rel="icon" sizes="64x64" href="{{ site.Params.neso.branding.favicon_ico | default "favicon.ico" | absURL }}">
+{{- with index $brandingImgs "favicon_svg" }}
+    <link rel="icon" sizes="any" href="{{ . }}" type="image/svg+xml">
+{{- end }}
+{{- with index $brandingImgs "apple_touch_icon" }}
+    <link rel="apple-touch-icon" sizes="180x180" href="{{ . }}">
+{{- end }}
+{{- $pwa := resources.Get "manifest.json" | resources.ExecuteAsTemplate "manifest.json" . }}
+<link rel="manifest" href="{{ $pwa.Permalink }}">
+
+
+{{- /* Styles */}}
+{{- with (templates.Defer (dict "key" "global")) }}
+    {{- partialCached "head/css.html" . }}
+{{- end }}

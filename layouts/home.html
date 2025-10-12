@@ -1,0 +1,120 @@
+{{- define "main" }}
+
+    {{- $uiIcons := partialCached "_funcs/get-ui-icons.html" . -}}
+
+    {{- /* Homepage list: enabled when featured_entries_limit > 0; cap to that many; no pagination. */}}
+    {{- $featureItems := int (site.Params.neso.home.list.featured_entries_limit | default 0) }}
+    {{- $showList     := gt $featureItems 0 }}
+    {{- $paginator    := "" }}
+
+    {{- if $showList }}
+        {{- $pages := where site.RegularPages "Section" "in" site.Params.mainSections }}
+        {{- if site.Params.neso.home.list.includes_all_sections }}
+            {{- $pages = site.RegularPages }}
+        {{- end }}
+
+        {{- /* cap to featured_entries_limit */}}
+        {{- $pages = first $featureItems $pages }}
+
+        {{- /* single-page paginator (no next/prev nav), guard empty result */}}
+        {{- $perPage := cond (gt (len $pages) 0) (len $pages) 1 }}
+        {{- $paginator = .Paginate $pages $perPage }}
+    {{- end }}
+
+    {{- $displayMode := site.Params.neso.home.display_mode | default "profile" }}
+    {{- $isProfile   := eq $displayMode "profile" }}
+    {{- $isIntro     := eq $displayMode "intro" }}
+    {{- $isCustom    := and (ne $displayMode "profile") (ne $displayMode "intro") }}
+
+
+    {{- if $isProfile }}
+
+        <section class="layout not-last:mb-r-xl last:expansive
+                        flex flex-col items-center last:justify-center">
+            {{- partial "home/profile.html" . }}
+        </section>
+
+    {{- else if $isIntro }}
+
+        <section class="layout not-last:mb-r-xl last:expansive">
+
+            {{- if .Title }}
+                <header class="not-last:mb-r-lg">
+                    <h1 class="font-bold text-3xl md:text-4xl text-neso-fg1">
+                        {{ .Title }}
+                    </h1>
+                </header>
+            {{- end }}
+
+            {{- if .Content }}
+                <div class="cnt not-last:mb-r-xl">
+                    {{- if not site.Params.neso.page.disable_heading_links }}
+                        {{- partial "content/heading_links.html" .Content }}
+                    {{- else }}
+                        {{ .Content }}
+                    {{- end }}
+                </div>
+            {{- end }}
+
+            {{- partial "home/social_icons.html" (dict "align" "start") }}
+        </section>
+
+    {{- else }}
+
+        {{- $isHTML := false }}
+        {{- with .File }}
+            {{- $isHTML = in (slice "html" "htm") (lower .Ext) }}
+        {{- end }}
+
+        {{- if .Content }}
+            <section class="layout not-last:mb-r-xl {{- if not $isHTML }} cnt {{- end -}}">
+                {{ .Content }}
+            </section>
+        {{- end }}
+        
+    {{- end }}
+
+
+    {{- if $showList }}
+
+        <section class="layout">
+            <header class="border-t border-t-neso-deco3 pt-r-xl mb-r-lg">
+                <h2 class="font-semibold text-neso-fg1 text-2xl md:text-3xl flex items-center {{- if $isProfile }} justify-center {{- end -}}">
+                    {{- i18n "feature_entries" | default "Highlights" }}
+                    {{- $rss := .OutputFormats.Get "rss" }}
+                    {{- if $rss }}
+                        <a class="ms-2 text-neso-fg3 hover:text-neso-splash focus-visible:text-neso-splash"
+                           href="{{ $rss.RelPermalink }}"
+                           title="RSS" aria-label="RSS">
+                            <svg class="size-5 stroke-3 stroke-current fill-none">
+                                <use href="{{ $uiIcons.RelPermalink }}#rss" />
+                            </svg>
+                        </a>
+                    {{- end }}
+                </h2>
+            </header>
+
+            {{- partial "list_body.html" (dict "ctx" . "paginator" $paginator) }}
+
+            {{- if not site.Params.neso.home.list.hide_view_archives_cta }}
+                {{- $archivesURL := "" }}
+                {{- with site.Menus.main }}
+                    {{- range . }}
+                        {{- if eq .Identifier "archives" }}
+                            {{- $archivesURL = .URL }}
+                        {{- end }}
+                    {{- end }}
+                {{- end }}
+                {{- with $archivesURL }}
+                    <footer class="text-center">
+                        <a class="btn inline-block px-5 py-3 rounded-full" href="{{ . }}">
+                            {{- i18n "view_archives" | default "View Archives" -}}
+                        </a>
+                    </footer>
+                {{- end }}
+            {{- end }}
+        </section>
+
+    {{- end }}
+
+{{- end -}}

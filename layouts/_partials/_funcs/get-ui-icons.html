@@ -1,0 +1,8 @@
+{{- $outDir := site.Params.neso.assets.output_dir | default "assets" }}
+{{- $uiIcons := resources.Get "img/ui_icons.svg" }}
+{{- $uiIcons  = $uiIcons | resources.Copy (path.Join $outDir $uiIcons.Name) }}
+{{- if not site.Params.neso.assets.disable_fingerprinting }}
+    {{- $uiIcons = $uiIcons | fingerprint }}
+{{- end }}
+
+{{- return $uiIcons -}}

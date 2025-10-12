@@ -1,0 +1,142 @@
+@layer components {
+
+    .cnt {
+        @import "content_main.css";
+        @import "content_extra.css";
+        @import "content_chroma.css";
+    }
+
+
+    .toc {
+        @apply mb-r-xl border border-neso-deco3 bg-neso-bg2 rounded-xl p-3;
+
+        --chev-icon: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>');
+        
+        summary {
+            @apply flex gap-[.5em] items-center cursor-pointer list-none ps-[.25em];
+
+            span {
+                @apply font-medium text-lg text-neso-fg2;
+            }
+
+            &::before {
+                @apply
+                    content-['']
+                    size-[1.25em] grow-0 shrink-0 basis-[1.25em] bg-neso-fg3
+                    transition-transform duration-250
+                    mask-[var(--chev-icon)] mask-no-repeat mask-center mask-size-[1.25em]
+                ;
+            }
+            
+            :where(details[open]) > &::before {
+                @apply rotate-90;
+            }
+        }
+        
+        nav {
+            @apply pt-2;
+
+            ol {
+                @apply list-decimal;
+            }
+
+            ul {
+                @apply list-disc;
+            }
+            
+            ol, ul {
+                @apply ps-[2em];    
+
+                ol, ul {
+                    @apply ps-[1.625em];
+            
+                    li {
+                        @apply my-2;
+
+                        &::marker {
+                            @apply text-neso-deco1;
+                        }
+
+                        a {
+                            @apply text-neso-fg3;
+                        }
+                    }
+                }
+            }
+        
+            > ol > li,
+            > ul > li  {
+                @apply my-3;
+
+                &::marker {
+                    @apply text-neso-fg3;
+                }
+
+                > a { @apply
+                    text-lg text-neso-fg2;
+                }
+            }
+
+            a {
+                @apply no-underline;
+            
+                &:hover,
+                &:focus-visible {
+                    @apply text-neso-fg0;
+                }
+            }
+        
+            li:has(
+                > a:hover,
+                > a:focus-visible
+                ) {
+                    &::marker {
+                        @apply text-neso-splash;
+                    }
+            }
+        }
+    }
+
+
+    #searchbox {
+        --item-icon: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>');
+
+        input {
+            @apply px-3 py-2 mb-4 w-full bg-neso-bg2 focus:bg-neso-bg3 rounded-lg focus:outline-hidden;
+        }
+
+        :where(#search_results) li {
+            @apply px-3 py-3 rounded-lg isolate relative flex items-center gap-2;
+
+            a {
+                @apply text-xl outline-none no-underline;
+
+                &::before {
+                    @apply content-[''] absolute z-5 inset-0;
+                }
+            }
+
+            .indicator {
+                @apply
+                    inline-block size-[1.125em] grow-0 shrink-0 basis-[1.125em] bg-neso-fg2
+                    transition 
+                    mask-[var(--item-icon)] mask-no-repeat mask-center mask-size-[1.125em]
+                ;
+            }
+
+            &:hover,
+            &:focus-visible,
+            &.focus {
+
+                a {
+                    @apply text-neso-splash;
+                }
+
+                .indicator {
+                    @apply bg-neso-splash;
+                }
+            }
+        }
+    }
+    
+}

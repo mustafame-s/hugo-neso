@@ -1,0 +1,41 @@
+{{- $min := "0.150.0" -}}
+{{- if lt hugo.Version $min -}}
+    {{- errorf "This theme requires Hugo v%s or later." $min -}}
+{{- end -}}
+
+<!DOCTYPE html>
+
+{{- /* noJS - set data-color-scheme directly on the <html> tag so CSS can apply the intended color scheme. */}}
+{{- $forceColorScheme := site.Params.neso.force_color_scheme }}
+{{- if in (slice true "true") $forceColorScheme }}
+    {{- $forceColorScheme = "system" }}
+{{- end }}
+{{- $explicitColorScheme := and $forceColorScheme (ne $forceColorScheme "system") }}
+
+<html lang="{{ site.Language.LanguageCode }}"
+      dir="{{ site.Language.LanguageDirection | default "ltr" }}"
+      {{- if $explicitColorScheme }}
+      data-color-scheme="{{- $forceColorScheme -}}"
+      {{- end }}>
+
+<head>
+    {{- partial "include/head_start.html" . }}
+    {{- partial "head/head.html" . }}
+    {{- partial "include/head_end.html" . }}
+</head>
+
+<body id="top">
+    {{- partial "include/body_start.html" . }}
+    {{- partial "header.html" . }} {{/* TODO: in-layout hooks */}}
+
+    <main class="pt-r-xl"> {{/* TODO: in-layout hooks */}}
+        {{- block "main" . }}
+        {{- end }}
+    </main>
+
+    {{- partial "footer.html" . }} {{/* TODO: in-layout hooks */}}
+    {{- partial "footer_js.html" . }}
+    {{- partial "include/body_end.html" . }}
+</body>
+
+</html>

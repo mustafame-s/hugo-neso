@@ -1,0 +1,135 @@
+{{- $outDir := site.Params.neso.assets.output_dir | default "assets" }}
+{{- $sprite := resources.Get "img/share_icons.svg" }}
+{{- $sprite  = $sprite | resources.Copy (path.Join $outDir $sprite.Name) }}
+{{- if not site.Params.neso.assets.disable_fingerprinting }}
+    {{- $sprite = $sprite | fingerprint }}
+{{- end }}
+
+{{- $pageurl := .Permalink }}
+{{- $title := .Title }}
+
+{{- /* Tags for X sharing */}}
+{{- $.Scratch.Set "tags" "" }}
+{{- with .Params.Tags }}
+    {{- $hashtags := newScratch }}
+    {{- range . }}
+        {{- $hashtags.Add "tags" (slice (replaceRE "(\\s)" "" . )) }}
+    {{- end }}
+    {{- $.Scratch.Set "tags" (delimit ($hashtags.Get "tags") ",") }}
+{{- end }}
+
+
+{{- $ShareButtons := site.Params.neso.page.share_providers }}
+{{- $custom := false }}
+{{- with $ShareButtons }}
+    {{- $custom = true }}
+{{- end }}
+
+{{- /* Share buttons */}}
+<ul class="mb-r-lg last:mb-0 flex flex-wrap gap-3">
+    {{- if (or (cond ($custom) (in $ShareButtons "x") (true)) (cond ($custom) (in $ShareButtons "twitter") (true))) }}
+    <li class="contents">
+        <a class="text-neso-fg3 hover:text-neso-fg1"
+           href="https://x.com/intent/tweet?text={{- $title | urlquery -}}&amp;url={{- $pageurl | urlquery -}}&amp;hashtags={{- $.Scratch.Get "tags" | urlquery -}}"
+           target="_blank" rel="noopener noreferrer"
+           title="{{- i18n "share_btn_title" (dict "Provider" "X")
+                | default (printf "Share on %s" "X") -}}"
+           aria-label="{{- i18n "share_btn_aria" (dict "Title" ($title | plainify) "Provider" "X")
+                | default (printf "Share “%s” on %s" ($title | plainify) "X") -}}">
+            <svg class="size-8" fill="currentColor" aria-hidden="true">
+                <use href="{{ $sprite.RelPermalink }}#x" />
+            </svg>
+        </a>
+    </li>
+    {{- end }}
+    {{- if (cond ($custom) (in $ShareButtons "facebook") (true)) }}
+    <li class="contents">
+        <a class="text-neso-fg3 hover:text-neso-fg1"
+           href="https://www.facebook.com/sharer/sharer.php?u={{- $pageurl | urlquery -}}"
+           target="_blank" rel="noopener noreferrer"
+           title="{{- i18n "share_btn_title" (dict "Provider" "Facebook")
+                | default (printf "Share on %s" "Facebook") -}}"
+           aria-label="{{- i18n "share_btn_aria" (dict "Title" ($title | plainify) "Provider" "Facebook")
+                | default (printf "Share “%s” on %s" ($title | plainify) "Facebook") -}}">
+            <svg class="size-8" fill="currentColor" aria-hidden="true">
+                <use href="{{ $sprite.RelPermalink }}#facebook" />
+            </svg>
+        </a>
+    </li>
+    {{- end }}
+    {{- if (cond ($custom) (in $ShareButtons "line") (true)) }}
+    <li class="contents">
+        <a class="text-neso-fg3 hover:text-neso-fg1"
+           href="https://social-plugins.line.me/lineit/share?url={{- $pageurl | urlquery -}}"
+           target="_blank" rel="noopener noreferrer"
+           title="{{- i18n "share_btn_title" (dict "Provider" "LINE")
+                | default (printf "Share on %s" "LINE") -}}"
+           aria-label="{{- i18n "share_btn_aria" (dict "Title" ($title | plainify) "Provider" "LINE")
+                | default (printf "Share “%s” on %s" ($title | plainify) "LINE") -}}">
+            <svg class="size-8" fill="currentColor" aria-hidden="true">
+                <use href="{{ $sprite.RelPermalink }}#line" />
+            </svg>
+        </a>
+    </li>
+    {{- end }}
+    {{- if (cond ($custom) (in $ShareButtons "reddit") (true)) }}
+    <li class="contents">
+        <a class="text-neso-fg3 hover:text-neso-fg1"
+           href="https://www.reddit.com/submit?url={{- $pageurl | urlquery -}}&amp;title={{- $title | urlquery -}}"
+           target="_blank" rel="noopener noreferrer"
+           title="{{- i18n "share_btn_title" (dict "Provider" "Reddit")
+                | default (printf "Share on %s" "Reddit") -}}"
+           aria-label="{{- i18n "share_btn_aria" (dict "Title" ($title | plainify) "Provider" "Reddit")
+                | default (printf "Share “%s” on %s" ($title | plainify) "Reddit") -}}">
+            <svg class="size-8" fill="currentColor" aria-hidden="true">
+                <use href="{{ $sprite.RelPermalink }}#reddit" />
+            </svg>
+        </a>
+    </li>
+    {{- end }}
+    {{- if (cond ($custom) (in $ShareButtons "telegram") (true)) }}
+    <li class="contents">
+        <a class="text-neso-fg3 hover:text-neso-fg1"
+           href="https://t.me/share/url?url={{- $pageurl | urlquery -}}&amp;text={{- $title | urlquery -}}"
+           target="_blank" rel="noopener noreferrer"
+           title="{{- i18n "share_btn_title" (dict "Provider" "Telegram")
+           | default (printf "Share on %s" "Telegram") -}}"
+           aria-label="{{- i18n "share_btn_aria" (dict "Title" ($title | plainify) "Provider" "Telegram")
+           | default (printf "Share “%s” on %s" ($title | plainify) "Telegram") -}}">
+            <svg class="size-8" fill="currentColor" aria-hidden="true">
+                <use href="{{ $sprite.RelPermalink }}#telegram" />
+            </svg>
+        </a>
+    </li>
+    {{- end }}
+    {{- if (cond ($custom) (in $ShareButtons "whatsapp") (true)) }}
+    <li class="contents">
+        <a class="text-neso-fg3 hover:text-neso-fg1"
+           href="https://wa.me/?text={{- (printf "%s %s" $title $pageurl) | urlquery -}}"
+           target="_blank" rel="noopener noreferrer"
+           title="{{- i18n "share_btn_title" (dict "Provider" "WhatsApp")
+                | default (printf "Share on %s" "WhatsApp") -}}"
+           aria-label="{{- i18n "share_btn_aria" (dict "Title" ($title | plainify) "Provider" "WhatsApp")
+                | default (printf "Share “%s” on %s" ($title | plainify) "WhatsApp") -}}">
+            <svg class="size-8" fill="currentColor" aria-hidden="true">
+                <use href="{{ $sprite.RelPermalink }}#whatsapp" />
+            </svg>
+        </a>
+    </li>
+    {{- end }}
+    {{- if (cond ($custom) (in $ShareButtons "linkedin") (true)) }}
+    <li class="contents">
+        <a class="text-neso-fg3 hover:text-neso-fg1"
+           href="https://www.linkedin.com/sharing/share-offsite/?url={{- $pageurl | urlquery -}}"
+           target="_blank" rel="noopener noreferrer"
+           title="{{- i18n "share_btn_title" (dict "Provider" "LinkedIn")
+                | default (printf "Share on %s" "LinkedIn") -}}"
+           aria-label="{{- i18n "share_btn_aria" (dict "Title" ($title | plainify) "Provider" "LinkedIn")
+                | default (printf "Share “%s” on %s" ($title | plainify) "LinkedIn") -}}">
+            <svg class="size-8" fill="currentColor" aria-hidden="true">
+                <use href="{{ $sprite.RelPermalink }}#linkedin" />
+            </svg>
+        </a>
+    </li>
+    {{- end }}
+</ul>

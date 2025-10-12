@@ -1,0 +1,2 @@
+{{- /* formats .Content headings by adding an anchor (keyboard+SR friendly) */}}
+{{ . | replaceRE "(<h[1-6] id=\"([^\"]+)\".+)(</h[1-6]+>)" (printf "${1}<a class=\"heading-link\" href=\"#${2}\" aria-label=%q title=%q><span aria-hidden=\"true\">#</span></a>${3}" (i18n "heading_link_label" | default "Link to this section") (i18n "heading_link_label" | default "Link to this section")) | safeHTML }}

@@ -1,0 +1,20 @@
+{{- $headers := findRE "<h[1-6].*?>(.|\n])+?</h[1-6]>" .Content }}
+{{- $has_headers := ge (len $headers) 1 }}
+{{- if $has_headers }}
+    <div class="toc">
+        {{- $expanded := site.Params.neso.page.toc_expanded | default false }}
+        {{- with .Params.neso }}
+            {{- with index . "toc_expanded" }}
+                {{- $expanded = . }}
+            {{- end }}
+        {{- end }}
+        <details {{- if $expanded }} open {{- end }}>
+            <summary>
+                <span>{{- i18n "toc" | default "Table of Contents" }}</span>
+            </summary>
+            <div>
+                {{ .TableOfContents }}
+            </div>
+        </details>
+    </div>
+{{- end -}}

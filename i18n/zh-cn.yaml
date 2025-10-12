@@ -1,0 +1,79 @@
+alert_caution:
+    other: "警告"
+
+alert_important:
+    other: "重要"
+
+alert_note:
+    other: "补充"
+
+alert_tip:
+    other: "提示"
+
+alert_warning:
+    other: "留意"
+
+author:
+  other: "作者："
+
+breadcrumbs:
+    other: "目前位置"
+
+code_copied:
+    other: "📋 已拷贝！"
+
+code_copy:
+    other: "拷贝"
+
+draft:
+  other: "草稿"
+
+entry_count:
+    other: "条目数量："
+
+entry_link_aria:
+    other: "前往阅读「{{ .Title }}」"
+
+feature_entries:
+    other: "精选"
+
+heading_link_label:
+    other: "直达此段的链接"
+
+home:
+    other: "首页"
+
+next_entry:
+    other: "前一则"
+
+next_page:
+    other: "下一页"
+
+prev_entry:
+    other: "后一则"
+
+prev_page:
+    other: "上一页"
+
+read_time:
+    one: "阅读时间：1 分"
+    other: "阅读时间：{{ .Count }} 分"
+
+share_btn_aria:
+    other: "在 {{ .Provider }} 分享「{{ .Title }}」"
+
+share_btn_title:
+    other: "分享到 {{ .Provider }}"
+
+toc:
+    other: "目次"
+
+translations:
+    other: "多语版本："
+
+view_archives:
+    other: "查看过往内容"
+
+words:
+    one: "字"
+    other: "{{ .Count }} 字"

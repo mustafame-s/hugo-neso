@@ -1,0 +1,217 @@
+{{- $uiIcons      := partialCached "_funcs/get-ui-icons.html" . }}
+{{- $brandingImgs := partialCached "_funcs/get-branding-assets.html" . }}
+
+<header class="layout-fluid relative">
+    <nav class="py-4 flex gap-x-8 justify-between items-center flex-wrap">
+        <div class="min-h-(--touch-target) flex items-center flex-wrap">
+            {{- $logo_text := site.Params.neso.branding.logo_text | default site.Title }}
+            {{- $hide_logo_text := site.Params.neso.branding.hide_logo_text }}
+            <a class="contents" href="{{ site.Home.RelPermalink }}" title="{{ $logo_text }}">
+                {{- $logoLight   := index $brandingImgs "logo_image" }}
+                {{- $logoDark    := index $brandingImgs "logo_image_dark" }}
+                {{- $logoH       := site.Params.neso.branding.logo_image_height | default "44" }}
+                {{- $logoW       := site.Params.neso.branding.logo_image_width  | default $logoH }}
+                {{- with $logoLight }}
+                    {{- $wClass   := printf "w-[%spx]" $logoW }}
+                    {{- $hClass   := printf "h-[%spx]" $logoH }}
+                    {{- $bgLight  := printf "bg-[url('%s')]" $logoLight }}
+                    {{- $bgDarkCl := cond $logoDark (printf "dark:bg-[url('%s')]" $logoDark) "" }}
+                    <span aria-hidden="true"
+                          class="grow-0 shrink-0 inline-block me-3 bg-no-repeat bg-left bg-size-[100%_100%] {{ $wClass }} {{ $hClass }} {{ $bgLight }} {{ $bgDarkCl }}"></span>
+                {{- end }}
+                {{- if not $hide_logo_text }}
+                    <h3 class="text-2xl text-neso-fg1 font-medium">{{ $logo_text }}</h3>
+                {{- end }}
+            </a>
+            {{- $lang := .Lang }}
+            {{- with site.Home.Translations }}
+                <ul class="flex {{- if and $logo_text (not $hide_logo_text) }} sep-s-general [&::before]:mx-2{{- end }}">
+                    {{- range . }}
+                        {{- if ne $lang .Lang }}
+                            <li class="me-2 last:me-0">
+                                <a class="ui-link"
+                                   href="{{ .RelPermalink }}"
+                                   hreflang="{{ .Lang }}"
+                                   aria-label="{{ ((.Language.LanguageName) | default (.Lang | upper)) }}">
+                                    {{- if or site.Params.neso.display_short_lang_name (not .Language.LanguageName) -}}
+                                        {{- .Lang | upper -}}
+                                    {{- else -}}
+                                        {{- .Language.LanguageName -}}
+                                    {{- end -}}
+                                </a>
+                            </li>
+                        {{- end }}
+                    {{- end }}
+                </ul>
+            {{- end }}
+        </div>
+
+        {{- $currentPage := . }}
+        {{- $hasMenu := site.Menus.main }}
+
+        {{- if and $hasMenu (not site.Params.neso.disable_responsive_menu) }}
+            <span role="button" aria-label="Toggle Menu" title="Toggle Menu" tabindex="0"
+                  class="menu-toggle noscript:hidden md:hidden cursor-pointer p-2 transition text-neso-fg1 bg-neso-bg2 hover:bg-neso-bg3 focus-visible:bg-neso-bg3 rounded-xl">
+                <svg class="size-5 stroke-current stroke-2" stroke-linecap="round" viewBox="0 0 24 24" aria-hidden="true">
+                    <line x1="4"  y1="8" x2="12" y2="16"
+                          vector-effect="non-scaling-stroke"
+                          class="transition-transform duration-500 ease-in-out
+                                 menu-on:scale-150 menu-on:translate-y-[-6px]" />
+                    <line x1="20" y1="8" x2="12" y2="16"
+                          vector-effect="non-scaling-stroke"
+                          class="transition-transform duration-500 ease-in-out
+                                 menu-on:scale-150 menu-on:translate-y-[-6px] menu-on:translate-x-[-12px]" />
+                </svg>
+            </span>
+        {{- end }}
+
+        {{- if and $hasMenu }}
+            <ul id="menu"
+                class="flex flex-nowrap break-keep whitespace-nowrap 
+            
+                {{- if not site.Params.neso.disable_responsive_menu }}
+
+                    {{- /* responsive menu - base */}}
+                    transition-[height,padding] duration-500 ease-in-out
+                    absolute left-0 top-full z-666 flex-col gap-y-1 w-dvw overscroll-contain bg-neso-bg1
+                    [&_li_a]:text-xl
+
+                    {{- /* responsive menu - collapsed */}}
+                    pointer-events-none h-0 overflow-y-clip
+
+                    {{- /* responsive menu - expanded */}}
+                    menu-on:pointer-events-auto menu-on:pt-5 menu-on:pb-[calc(20svh_+_var(--spacing)_*_5)] menu-on:starting:h-0 menu-on:h-[calc(120svh_-_100%)] menu-on:overflow-y-auto
+
+                    {{- /* responsive menu - undo: noscript */}}
+                    noscript:static noscript:flex-row noscript:gap-x-4 noscript:gap-y-0 noscript:w-auto noscript:overscroll-auto noscript:bg-transparent
+                    noscript:pointer-events-auto noscript:h-auto noscript:overflow-auto
+                    noscript:[&_li_a]:text-base
+
+                    {{- /* responsive menu - undo: wide screen */}}
+                    md:static md:flex-row md:gap-x-4 md:gap-y-0 md:w-auto md:overscroll-auto md:bg-transparent
+                    md:pointer-events-auto md:h-auto md:overflow-auto
+                    md:[&_li_a]:text-base
+
+                {{- else }}
+                    flex-row gap-x-4 w-auto overflow-auto
+
+                {{- end -}}">
+
+                {{- /* Menu items */}}
+                {{- partial "inline/menu_items.html" (dict "ctx" $currentPage "menuEntries" site.Menus.main) }}
+
+            </ul>
+        {{- end }}
+    </nav>
+</header>
+
+
+{{- define "_partials/inline/menu_items.html" }}
+    {{- $uiIcons     := partialCached "_funcs/get-ui-icons.html" . }}
+    {{- $currentPage := .ctx }}
+
+    {{- $currentPageURL := $currentPage.Permalink }}
+    {{- $homeURL := site.Home.Permalink }}
+
+    {{- range .menuEntries }}
+        {{- $menuItemURL := .URL }}
+        {{- $menuPage := .Page }}
+
+        {{- /* Exact match */}}
+        {{- $isExact := false }}
+        {{- with $menuPage }}
+            {{- /* Menu item is bound to a real Page, compare by its (Rel)Permalink. */}}
+            {{- $isExact = or (eq $currentPage.Permalink .Permalink) (eq $currentPage.RelPermalink .RelPermalink) }}
+        {{- else }}
+            {{- /* Fall back to URL equality. */}}
+            {{- $isExact = eq $menuItemURL $currentPageURL }}
+        {{- end }}
+
+        {{- /* Ancestor match: works for Sections and Taxonomies (use current page's ancestors) */}}
+        {{- $isAncestor := false }}
+        {{- if not $isExact }}
+            {{- with $menuPage }}
+                {{- /* Menu item is bound to a real Page, compare by its (Rel)Permalink. */}}
+                {{- range $currentPage.Ancestors }}
+                    {{- if or (eq .Permalink $menuPage.Permalink) (eq .RelPermalink $menuPage.RelPermalink) }}
+                        {{- $isAncestor = true }}
+                    {{- end }}
+                {{- end }}
+            {{- else }}
+                {{- /* Fall back to URL equality. */}}
+                {{- range $currentPage.Ancestors }}
+                    {{- if eq .Permalink $menuItemURL }}
+                        {{- $isAncestor = true }}
+                    {{- end }}
+                {{- end }}
+            {{- end }}
+        {{- end }}
+
+        {{- $isActive   := or $isExact (and $isAncestor (ne $menuItemURL $homeURL)) }}
+
+        {{- $siteHost   := (urls.Parse site.BaseURL).Host }}
+        {{- $u          := urls.Parse .URL }}
+        {{- $isExternal := and $u.IsAbs (ne $u.Host $siteHost) }}
+
+
+        {{- $class := "ui-link flex justify-center items-center mx-auto max-w-fit min-h-(--touch-target) font-medium" }}
+        {{- $classCurrent := "active text-neso-fg0 underline [&>span]:decoration-2 decoration-neso-accent" }}
+        {{- $classAncestor := "ancestor text-neso-fg0 underline [&>span]:decoration-2 decoration-neso-accent" }}
+        {{- $attrs := dict "href" .URL }}
+
+        {{- if $isExact }}
+            {{- $class = strings.TrimSpace (print $class " " $classCurrent) }}
+            {{- $attrs = merge $attrs (dict "class" $class "aria-current" "page") }}
+        {{- else if and $isAncestor (ne $menuItemURL $homeURL) }}
+            {{- $class = strings.TrimSpace (print $class " " $classAncestor) }}
+            {{- $attrs = merge $attrs (dict "class" $class "aria-current" "true") }}
+        {{- else if $isExternal }}
+            {{- $attrs = merge $attrs (dict "class" $class) }}
+            {{- if site.Params.neso.ext_link_no_opener_referrer }}
+                {{- $attrs = merge $attrs (dict "rel" "external noreferrer noopener") }}
+            {{- end }}
+            {{- if site.Params.neso.ext_link_new_window }}
+                {{- $attrs = merge $attrs (dict "target" "_blank") }}
+            {{- end }}
+        {{- else }}
+            {{- $attrs = merge $attrs (dict "class" $class) }}
+        {{- end }}
+
+        {{- $name := .Name }}
+        {{- with .Identifier }}
+            {{- with T . }}
+                {{- $name = . }}
+            {{- end }}
+        {{- end }}
+
+        <li class="contents">
+            <a
+                {{- range $k, $v := $attrs }}
+                    {{- with $v }}
+                        {{- printf " %s=%q" $k $v | safeHTMLAttr }}
+                    {{- end }}
+                {{- end -}}
+            >
+                <span>
+                    {{- .Pre | safeHTML }}
+                    {{- $name -}}
+                    {{ .Post | safeHTML -}}
+                </span>
+            
+                {{- if and $isExternal site.Params.neso.ext_link_indicator }}
+                    <svg class="inline-block size-[1em] ms-1 align-text-top stroke-2 stroke-current fill-none">
+                        <use href="{{- $uiIcons.RelPermalink -}}#external-link" />
+                    </svg>
+                {{- end }}
+            </a>
+
+            {{- /* TODO: Proper sub-menu
+            {{- with .Children }}
+                <ul>
+                    {{- partial "inline/menu_items.html" (dict "ctx" $currentPage "menuEntries" .) }}
+                </ul>
+            {{- end }}
+            */}}
+        </li>
+    {{- end }}
+{{- end }} {{- /* partial ends */}}

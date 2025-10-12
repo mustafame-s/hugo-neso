@@ -1,0 +1,51 @@
+{{- $uiIcons := partialCached "_funcs/get-ui-icons.html" . }}
+
+{{- if eq .Type "alert" }}
+
+    <blockquote class="alert alert-{{- .AlertType -}}">
+        <p class="alert-title">{{- with .AlertTitle }}{{ . }}{{- else }}{{ or (i18n (printf "alert_%s" .AlertType)) (title .AlertType) }}{{ end }}</p>
+        {{ .Text }}
+    </blockquote>
+
+{{- else }}
+
+    {{- $source := .Attributes.source }}
+
+    <blockquote {{- with $source }} cite="{{ . | safeURL }}"{{- end }}>
+        {{ .Text }}
+        {{- with .Attributes.author }}
+            <footer>
+                <p>–&nbsp;
+                    {{- if $source }}
+                        {{- $siteHost   := (urls.Parse site.BaseURL).Host }}
+                        {{- $u          := urls.Parse $source }}
+                        {{- $isExternal := and $u.IsAbs (ne $u.Host $siteHost) }}
+                        <a href="{{ $source | safeURL }}"
+                        class="inline-flex flex-wrap gap-1 items-center [&_svg]:text-neso-fg3/64"
+                        {{- if $isExternal }}
+                        {{- if site.Params.neso.ext_link_no_opener_referrer }}
+                        rel="external noreferrer noopener"
+                        {{- end }}
+                        {{- if site.Params.neso.ext_link_new_window }}
+                        target="_blank"
+                        {{- end }}
+                        {{- end -}}
+                        >
+                            <span>
+                                {{ . | safeHTML }}
+                            </span>
+                            {{- if and $isExternal site.Params.neso.ext_link_indicator }}
+                                <svg class="shrink-0 grow-0 size-[1em] stroke-2 stroke-current fill-none">
+                                    <use href="{{ $uiIcons.RelPermalink }}#external-link" />
+                                </svg>
+                            {{- end }}
+                        </a>
+                    {{- else }}
+                        {{ . | safeHTML }}
+                    {{- end }}
+                </p>
+            </footer>
+        {{- end -}}
+    </blockquote>
+
+{{- end -}}

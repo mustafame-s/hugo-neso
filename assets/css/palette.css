@@ -1,0 +1,53 @@
+@theme {
+    --color-neso-fg0: var(--color-black);
+    --color-neso-fg1: var(--color-gray-900);
+    --color-neso-fg2: oklch(39% 0.012 259.733); /* ~ Gray 700 */
+    --color-neso-fg3: oklch(58% 0.01 264.364); /* ~ Gray 500 */
+    
+    --color-neso-deco0: var(--color-black);
+    --color-neso-deco1: --alpha(var(--color-neso-deco0) / 20%);
+    --color-neso-deco2: --alpha(var(--color-neso-deco0) / 10%);
+    --color-neso-deco3: --alpha(var(--color-neso-deco0) / 5%);
+    
+    --color-neso-bg0: var(--color-white);
+    --color-neso-bg1: oklch(97.2% 0.002 247.839); /* ~ Gray 50 */
+    --color-neso-bg2: oklch(94.6% 0.003 256.542); /* ~ Gray 100 */
+    --color-neso-bg3: oklch(93% 0.004 256.531); /* ~ Gray 200 */
+    
+    --color-neso-accent: oklch(63.689% 0.17503 248.851); /* ~ Sky 600 */
+    --color-neso-splash: oklch(63.689% 0.17503 248.851); /* ~ Sky 600 */
+    
+    --color-neso-okay: #05bd05;
+    --color-neso-note: #04a8da;
+    --color-neso-ding: #e89700;
+    --color-neso-oops: #ee3f3f;
+}
+
+@layer theme {
+    :root, :host {
+        @variant dark {
+            --color-neso-fg0: var(--color-white);
+            --color-neso-fg1: var(--color-gray-100);
+            --color-neso-fg2: var(--color-gray-300);
+            --color-neso-fg3: var(--color-gray-400);
+    
+            --color-neso-deco0: var(--color-white);
+            --color-neso-deco1: --alpha(var(--color-neso-deco0) / 24%);
+            --color-neso-deco2: --alpha(var(--color-neso-deco0) / 16%);
+            --color-neso-deco3: --alpha(var(--color-neso-deco0) / 10%);
+            
+            --color-neso-bg0: oklch(18% 0.009 261.692); /* ~ Gray 950 */
+            --color-neso-bg1: var(--color-black);
+            --color-neso-bg2: oklch(20% 0.01 264.665); /* ~ Gray 900 */
+            --color-neso-bg3: oklch(25.8% 0.012 256.848); /* ~ Gray 800 */
+            
+            --color-neso-accent: var(--color-sky-500);
+            --color-neso-splash: var(--color-sky-500);
+            
+            --color-neso-okay: #3fd63f;
+            --color-neso-note: #04a8da;
+            --color-neso-ding: #e89700;
+            --color-neso-oops: #ee3f3f;
+        }
+    }
+}

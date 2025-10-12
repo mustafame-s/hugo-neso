@@ -1,0 +1,203 @@
+{{- if not site.Params.neso.disable_responsive_menu }}
+    <script>
+        (() => {
+            'use strict';
+
+            const docEl = document.documentElement;
+            const menuBody  = document.getElementById('menu');
+            const menuToggler = document.querySelector('.menu-toggle');
+            if (!menuBody || !menuToggler) return;
+
+            // Helper: set state and sync ARIA
+            const setState = (state) => {
+                const next = state === 'expanded' ? 'expanded' : 'collapsed';
+                docEl.setAttribute('data-menu-state', next);
+                // A11Y & focus guard: when collapsed, make the menu unfocusable and hidden from assistive tech
+                const collapsed = next !== 'expanded';
+                menuBody.toggleAttribute('inert', collapsed);
+                menuBody.setAttribute('aria-hidden', collapsed ? 'true' : 'false');
+                menuToggler.setAttribute('aria-expanded', next === 'expanded' ? 'true' : 'false');
+            };
+
+            // 1) Initialization: default collapsed
+            if (!docEl.hasAttribute('data-menu-state')) {
+                setState('collapsed');
+            } else {
+                // Normalize any existing value
+                setState(docEl.getAttribute('data-menu-state'));
+            }
+
+            // A11Y wiring: link the button to the menu list
+            menuToggler.setAttribute('aria-controls', 'menu');
+            menuToggler.setAttribute('aria-expanded', docEl.getAttribute('data-menu-state') === 'expanded' ? 'true' : 'false');
+
+            // 2) Click to toggle state
+            menuToggler.addEventListener('click', () => {
+                setState(docEl.getAttribute('data-menu-state') === 'expanded' ? 'collapsed' : 'expanded');
+            });
+
+            // Keyboard: Space/Enter toggles, Esc closes
+            menuToggler.addEventListener('keydown', (e) => {
+                if (e.key === ' ' || e.key === 'Enter') { e.preventDefault(); menuToggler.click(); }
+                if (e.key === 'Escape' || e.key === 'Esc') { setState('collapsed'); }
+            });
+
+            // Global Escape: collapse when menu is expanded (works even if focus is not on the toggler)
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape' || e.key === 'Esc') {
+                    if (docEl.getAttribute('data-menu-state') === 'expanded') {
+                        setState('collapsed');
+                    }
+                }
+            });
+
+            // Collapse on link click (mobile UX) — robust & minimal
+            menuBody.addEventListener('click', (e) => {
+                const link = e.target.closest('a');
+                if (!link) return;
+                if (docEl.getAttribute('data-menu-state') === 'expanded') {
+                    setState('collapsed');
+                }
+            });
+
+            // 4) Helper: at ≥ md breakpoint, auto-sync accessibility state and remove inert
+            const mql = window.matchMedia('(min-width: 735px)');
+
+            // When viewport crosses the breakpoint, sync accessibility state
+            const onMQChange = (e) => {
+                if (e.matches) {
+                    // ≥ md: desktop mode — ensure menu is accessible and normalized
+                    docEl.setAttribute('data-menu-state', 'collapsed');
+                    menuBody.removeAttribute('inert');
+                    menuBody.removeAttribute('aria-hidden');
+                    menuToggler.setAttribute('aria-expanded', 'false');
+                } else {
+                    // < md: mobile mode — (re)apply inert based on current state
+                    const collapsed = docEl.getAttribute('data-menu-state') !== 'expanded';
+                    menuBody.toggleAttribute('inert', collapsed);
+                    menuBody.setAttribute('aria-hidden', collapsed ? 'true' : 'false');
+                    menuToggler.setAttribute('aria-expanded', collapsed ? 'false' : 'true');
+                }
+            };
+
+            if (mql.addEventListener) mql.addEventListener('change', onMQChange);
+            else mql.addListener(onMQChange);
+
+            // Run once on load to ensure correct inert state for current viewport
+            onMQChange(mql);
+
+        })();
+
+    </script>
+{{- end }}
+
+<script>
+    const menuBody = document.getElementById('menu');
+    if (menuBody) {
+        const savedMenuScrollPos = Number(localStorage.getItem('menu-scroll-position')) || 0;
+        menuBody.scrollLeft = savedMenuScrollPos;
+
+        menuBody.addEventListener('scroll', () => {
+            localStorage.setItem('menu-scroll-position', String(menuBody.scrollLeft));
+        });
+    }
+</script>
+
+<script>
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', (e) => {
+            const href = anchor.getAttribute('href') || '';
+            const raw  = href.slice(1); // remove leading '#'
+            if (!raw) return; // skip href="#"
+            e.preventDefault();
+
+            const id = decodeURIComponent(raw);
+            const target = document.getElementById(id);
+
+            if (target) {
+                target.scrollIntoView({ behavior: 'smooth' });
+            } else if (id === 'top') {
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            } else {
+                return; // no target found; do nothing
+            }
+            // Update history
+            if (id === 'top') {
+                history.replaceState(null, '', ' ');
+            } else {
+                history.pushState(null, '', `#${id}`);
+            }
+        });
+    });
+</script>
+
+{{- if not site.Params.neso.disable_scroll_to_top }}
+    <script>
+        var mybutton = document.getElementById("top-link");
+        window.onscroll = function () {
+            if (document.body.scrollTop > 800 || document.documentElement.scrollTop > 800) {
+                mybutton.style.visibility = "visible";
+                mybutton.style.opacity = "1";
+            } else {
+                mybutton.style.visibility = "hidden";
+                mybutton.style.opacity = "0";
+            }
+        };
+    </script>
+{{- end }}
+
+{{- if and (eq .Kind "page") (ne .Layout "archives" "search") (not site.Params.neso.page.hide_copy_code_button) }}
+    <script>
+        document.querySelectorAll('pre > code').forEach((codeblock) => {
+            const container = codeblock.parentNode.parentNode;
+
+            const copybutton = document.createElement('button');
+            copybutton.classList.add('copy-code');
+            copybutton.innerHTML = '{{- i18n "code_copy" | default "Copy" -}}';
+
+            function copyingDone() {
+                copybutton.innerHTML = '{{- i18n "code_copied" | default "Copied!" -}}';
+                setTimeout(() => {
+                    copybutton.innerHTML = '{{- i18n "code_copy" | default "Copy" -}}';
+                }, 2000);
+            }
+
+            copybutton.addEventListener('click', () => {
+            const clone = codeblock.cloneNode(true);
+            clone.querySelectorAll('.ln, .lnt').forEach(n => n.remove());
+            const text = (clone.innerText || clone.textContent || '').replace(/\s+$/, '');
+            
+            function legacyCopy(t) {
+                const ta = document.createElement('textarea');
+                ta.value = t;
+                document.body.appendChild(ta);
+                ta.select();
+                try { document.execCommand('copy'); } catch (e) {}
+                document.body.removeChild(ta);
+            }
+            
+            if (navigator.clipboard && navigator.clipboard.writeText) {
+                navigator.clipboard.writeText(text)
+                .then(copyingDone)
+                .catch(() => { legacyCopy(text); copyingDone(); });
+                return;
+            }
+            
+            legacyCopy(text);
+            copyingDone();
+            });
+
+            if (container.classList.contains("highlight")) {
+                container.appendChild(copybutton);
+            } else if (container.parentNode.firstChild == container) {
+                // td containing LineNos
+            } else if (codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.nodeName == "TABLE") {
+                // table containing LineNos and code
+                codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.appendChild(copybutton);
+            } else {
+                // code blocks not having highlight as parent class
+                codeblock.parentNode.appendChild(copybutton);
+            }
+        });
+    </script>
+{{- end }}

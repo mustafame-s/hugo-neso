@@ -1,0 +1,120 @@
+{{- $ctx       := .ctx       | default . }}
+{{- $paginator := .paginator | default false }}
+
+{{- with .ctx }}
+
+    {{- $uiIcons := partialCached "_funcs/get-ui-icons.html" . }}
+
+    {{- $term := .Data.Term }}
+    {{- range $index, $page := $paginator.Pages }}
+
+        {{- $heroEntry := site.Params.neso.list.prominent_first_entry }}
+        {{- $isHero := and $heroEntry (or $ctx.IsHome (eq $ctx.Kind "section")) (eq $index 0) (eq $paginator.PageNumber 1) }}
+
+        <article class="relative isolate
+                        flex flex-col gap-5
+                        {{ cond $isHero "first-entry" "md:flex-row" }}
+                        mb-r-lg p-4 md:p-5 rounded-2xl
+                        transition bg-neso-bg0">
+            {{- $siteHideCover := site.Params.neso.list.hide_cover_image }}
+            {{- $coverHidden := cond $siteHideCover true (.Params.neso.cover.hidden_in_list) }}
+
+
+            {{- if and .Params.neso.cover.image (not $coverHidden) }}
+                <figure class="{{- cond $isHero "" "md:order-last md:basis-1/3 md:grow-0 md:shrink-0 md:my-auto " -}}
+                               [&_img]:mx-auto [&_img]:rounded-sm">
+                    {{- partial "content/cover.html" (dict "ctx" . "IsSingle" false "isHero" (eq $index 0)) }}
+                </figure>
+            {{- end }}
+
+            <div class="flex flex-col basis-full
+                        wrap-anywhere">
+                <header class="mb-r-sm last:mb-0">
+                    <h2 class="flex flex-col content-start hyphens-auto {{- cond $isHero " text-2xl md:text-3xl" " text-xl md:text-2xl" }}">
+                        {{- if .Draft }}
+                            <span class="flex order-last items-center gap-1
+                                         mt-1 me-auto px-2 py-0.5
+                                         text-neso-fg3 bg-neso-bg2 border-1 border-neso-deco2 rounded-md">
+                                <svg class="size-4 stroke-2 stroke-current fill-none" aria-hidden="true">
+                                    <use href="{{ $uiIcons.RelPermalink }}#feather" />
+                                </svg>
+                                <span class="font-medium hidden sm:inline text-sm">
+                                    {{ i18n "draft" | default "Draft" }}
+                                </span>
+                            </span>
+                        {{- end }}
+                        <a class="ui-link hover:text-neso-splash focus-visible:text-neso-splash font-semibold after:absolute after:inset-0 after:z-10 after:content-['']"
+                           href="{{ .RelPermalink }}"
+                           aria-label="{{ i18n "entry_link_aria" (dict "Title" (.Title | plainify)) | default (printf "Read “%s”" (.Title | plainify)) }}">
+                            {{ .Title }}
+                        </a>
+                    </h2>
+                </header>
+
+                {{- if not site.Params.neso.list.hide_summary }}
+                    <div class="mb-r-sm last:mb-0 {{- cond $isHero " text-lg" " text-base" }}">
+                        <p>{{- .Summary | plainify | htmlUnescape -}}{{- if .Truncated -}}...{{- end -}}</p>
+                    </div>
+                {{- end }}
+
+                {{- $siteHideMeta := site.Params.neso.page.hide_metadata }}
+                {{- $hideMeta := $siteHideMeta }}
+                {{- with .Params.neso }}
+                    {{- with index . "hide_metadata" }}
+                        {{- $hideMeta = . }}
+                    {{- end }}
+                {{- end }}
+                {{- if not $hideMeta }}
+                    <footer class="flex flex-wrap items-baseline text-sm text-neso-fg3 {{- cond $isHero "" " md:mt-auto" }}">
+                        {{- partial "content/metadata.html" . }}
+                    </footer>
+                {{- end }}
+            </div>
+        </article>
+    {{- end }}
+
+    {{- if gt $paginator.TotalPages 1 }}
+        <footer>
+            <nav class="flex flex-nowrap justify-between items-center">
+                <a class="btn p-3 rounded-full {{- if not $paginator.HasPrev }} text-neso-fg3/50 bg-neso-bg2/72{{- end }}"
+                   role="button"
+                   aria-label="{{ i18n "prev_page" }}"
+                   {{- if $paginator.HasPrev }}
+                   href="{{ $.paginator.Prev.URL }}"
+                   {{- else }}
+                   aria-disabled="true"
+                   {{- end }}>
+                    <svg class="rtl:hidden size-6 stroke-2 stroke-current fill-none -ml-px mr-px" aria-hidden="true">
+                        <use href="{{ $uiIcons.RelPermalink }}#chevron-left" />
+                    </svg>
+                    <svg class="ltr:hidden size-6 stroke-2 stroke-current fill-none -mr-px ml-px" aria-hidden="true">
+                        <use href="{{ $uiIcons.RelPermalink }}#chevron-right" />
+                    </svg>
+                </a>
+                {{- if not .Params.neso.list.hide_page_nums }}
+                    <span dir="ltr" class="flex flex-nowrap gap-2 items-center text-lg text-neso-fg3">
+                        <span class="font-medium text-neso-fg1">{{ $paginator.PageNumber }}</span>
+                        <span class="text-base">/</span>
+                        <span class="">{{ $paginator.TotalPages }}</span>
+                    </span>
+                {{- end }}
+                <a class="btn p-3 rounded-full {{- if not $paginator.HasNext }} text-neso-fg3/50 bg-neso-bg2/72{{- end }}"
+                   role="button"
+                   aria-label="{{ i18n "next_page" }}"
+                   {{- if $paginator.HasNext }}
+                   href="{{ $.paginator.Next.URL }}"
+                   {{- else }}
+                   aria-disabled="true"
+                   {{- end }}>
+                    <svg class="rtl:hidden size-6 stroke-2 stroke-current fill-none -mr-px ml-px" aria-hidden="true">
+                        <use href="{{ $uiIcons.RelPermalink }}#chevron-right" />
+                    </svg>
+                    <svg class="ltr:hidden size-6 stroke-2 stroke-current fill-none -ml-px mr-px" aria-hidden="true">
+                        <use href="{{ $uiIcons.RelPermalink }}#chevron-left" />
+                    </svg>
+                </a>
+            </nav>
+        </footer>
+    {{- end }}
+
+{{- end }}
