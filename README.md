@@ -2,19 +2,19 @@
 
 Clean and modern — fully responsive with light/dark mode, Tailwind built in for easy customization, and solid SEO.
 
-[View the demo site](https://babeneso.github.io/hugo-neso/)
+**[View the demo site](https://babeneso.github.io/hugo-neso/)**
 
 > This theme is derived from “[PaperMod](https://github.com/adityatelange/hugo-PaperMod)” with modifications. Special thanks to the original author, please visit the repo and give it a star.
 
 <picture>
-    <source media="(prefers-color-scheme: dark)" srcset="https://github.com/babeneso/hugo-neso/raw/master/images/screenshot-dark.png">
-    <source media="(prefers-color-scheme: light)" srcset="https://github.com/babeneso/hugo-neso/raw/master/images/screenshot-light.png">
-    <img alt="Screenshot" src="https://github.com/babeneso/hugo-neso/raw/master/images/screenshot.png">
+    <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/babeneso/hugo-neso/master/images/screenshot-dark.png">
+    <source media="(prefers-color-scheme: light)" srcset="https://raw.githubusercontent.com/babeneso/hugo-neso/master/images/screenshot-light.png">
+    <img alt="Screenshot" src="https://raw.githubusercontent.com/babeneso/hugo-neso/master/images/screenshot.png">
 </picture>
 
-Neso is a carefully crafted Hugo theme that delivers a refined experience in a minimal aesthetic. It's lightweight and fast, fully responsive, supports light/dark mode, and offers easy theming via built‑in Tailwind and parameterized CSS; thoughtful SEO defaults help your content get discovered.
-
 (The preview above supports light and dark modes, try adjusting your display settings to see it switch!)
+
+Neso is a carefully crafted Hugo theme that delivers a refined experience in a minimal aesthetic. It's lightweight and fast, fully responsive, supports light/dark mode, and offers easy theming via built‑in Tailwind and parameterized CSS; thoughtful SEO defaults help your content get discovered.
 
 
 ## Highlights
@@ -37,9 +37,9 @@ Neso is a carefully crafted Hugo theme that delivers a refined experience in a m
 - Archives page included.  
 - Organized to match Hugo’s [new template system](https://gohugo.io/templates/new-templatesystem-overview/).
 
-[Responsive design preview](https://github.com/babeneso/hugo-neso/raw/master/images/screenshot-mobile.png)
+![Responsive design preview](https://raw.githubusercontent.com/babeneso/hugo-neso/master/images/screenshot-mobile.png)
 
-[Responsive design preview](https://github.com/babeneso/hugo-neso/raw/master/images/screenshot-2-mobile.png)
+![Responsive design preview](https://raw.githubusercontent.com/babeneso/hugo-neso/master/images/screenshot-2-mobile.png)
 
 
 ## Installation & Usage
@@ -57,22 +57,24 @@ I’m not a professional software developer; if you could give the project a sta
 
 ---
 
+# Chinese
+
 
 簡潔、現代 – 具備 RWD 與明／暗色模式，整合 Tailwind 易於客製，並有穩健的 SEO 表現。
 
-[瀏覽 Demo 站](https://babeneso.github.io/hugo-neso/)
+**[瀏覽 Demo 站](https://babeneso.github.io/hugo-neso/)**
 
 > 此佈景主題基於「[PaperMod](https://github.com/adityatelange/hugo-PaperMod)」修改製作而成，特別感謝原作者，請務必前往該 Repo 給予星星。
 
 <picture>
-    <source media="(prefers-color-scheme: dark)" srcset="https://github.com/babeneso/hugo-neso/raw/master/images/screenshot-dark.png">
-    <source media="(prefers-color-scheme: light)" srcset="https://github.com/babeneso/hugo-neso/raw/master/images/screenshot-light.png">
-    <img alt="Screenshot" src="https://github.com/babeneso/hugo-neso/raw/master/images/screenshot.png">
+    <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/babeneso/hugo-neso/master/images/screenshot-dark.png">
+    <source media="(prefers-color-scheme: light)" srcset="https://raw.githubusercontent.com/babeneso/hugo-neso/master/images/screenshot-light.png">
+    <img alt="Screenshot" src="https://raw.githubusercontent.com/babeneso/hugo-neso/master/images/screenshot.png">
 </picture>
 
-Neso 是精心設計的 Hugo 佈景主題，以極簡風格呈現細膩的網站體驗。輕量快速，具備 RWD、深淺色模式，透過內建的 Tailwind 與參數化 CSS 輕鬆調整風格；並有完善的 SEO 設定，讓你的內容更容易被看見。
-
 (上面預覽圖支援深 / 淺色模式，調整你的顯示器設定看看！)
+
+Neso 是精心設計的 Hugo 佈景主題，以極簡風格呈現細膩的網站體驗。輕量快速，具備 RWD、深淺色模式，透過內建的 Tailwind 與參數化 CSS 輕鬆調整風格；並有完善的 SEO 設定，讓你的內容更容易被看見。
 
 
 ## 亮點功能
@@ -95,10 +97,9 @@ Neso 是精心設計的 Hugo 佈景主題，以極簡風格呈現細膩的網站
 - 具備文章彙整頁面。
 - 符合[新版的 template system](https://gohugo.io/templates/new-templatesystem-overview/) 檔案整理方式。
 
-[佈景主題在行動裝置的預覽畫面](https://github.com/babeneso/hugo-neso/raw/master/images/screenshot-mobile.png)
+![佈景主題在行動裝置的預覽畫面](https://raw.githubusercontent.com/babeneso/hugo-neso/master/images/screenshot-mobile.png)
 
-[佈景主題在行動裝置的預覽畫面](https://github.com/babeneso/hugo-neso/raw/master/images/screenshot-2-mobile.png)
-
+![佈景主題在行動裝置的預覽畫面](https://raw.githubusercontent.com/babeneso/hugo-neso/master/images/screenshot-2-mobile.png)
 
 ## 安裝與使用
 
