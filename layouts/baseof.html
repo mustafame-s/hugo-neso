@@ -33,8 +33,8 @@
         {{- end }}
     </main>
 
-    {{- partial "footer.html" . }} {{/* TODO: in-layout hooks */}}
-    {{- partial "footer_js.html" . }}
+    {{- partialCached "footer.html" . }} {{/* TODO: in-layout hooks */}}
+    {{- partialCached "footer_js.html" . }}
     {{- partial "include/body_end.html" . }}
 </body>
 

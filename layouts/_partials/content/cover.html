@@ -37,7 +37,11 @@
                  srcset="
                     {{- range $size := $sizes }}
                         {{- if (ge $cover.Width $size) }}
-                            {{- printf "%s %s" (($cover.Resize (printf "%sx" $size)).Permalink) (printf "%sw," $size) }}
+                            {{- if hugo.IsExtended }}
+                                {{- printf "%s %s" (($cover.Resize (printf "%sx webp" $size)).Permalink) (printf "%sw," $size) }}
+                            {{- else }}
+                                {{- printf "%s %s" (($cover.Resize (printf "%sx" $size)).Permalink) (printf "%sw," $size) }}
+                            {{- end }}
                         {{- end }}
                     {{- end }}
                     {{- printf "%s %dw" ($cover.Permalink) ($cover.Width) }}"
