@@ -62,7 +62,7 @@ I’m not a professional software developer; if you could give the project a sta
 
 簡潔、現代 – 具備 RWD 與明／暗色模式，整合 Tailwind 易於客製，並有穩健的 SEO 表現。
 
-**[瀏覽 Demo 站](https://babeneso.github.io/hugo-neso/)**
+**[瀏覽 Demo 站](https://babeneso.github.io/hugo-neso/zh-tw/)**
 
 > 此佈景主題基於「[PaperMod](https://github.com/adityatelange/hugo-PaperMod)」修改製作而成，特別感謝原作者，請務必前往該 Repo 給予星星。
 
@@ -90,7 +90,7 @@ Neso 是精心設計的 Hugo 佈景主題，以極簡風格呈現細膩的網站
 - 可使用 GitHub Markdown [Alert](https://docs.github.com/en/get-started/writing-on-github/getting-started-with-writing-and-formatting-on-github/basic-writing-and-formatting-syntax#alerts) 語法。
 - 三種首頁排版可選：個人頁面模式、簡介模式、全自訂模式。
 - 整合 Tailwind CSS 4 與經過改良的 Typography plugin (Prose)。
-- 參數化的 CSS 設定，易與客製化。
+- 參數化的 CSS 設定，易於客製化。
 - OG Image、X Card，與 JSON-LD 結構化資料。
 - 已設定完成的 Favicon 與 PWA `manifest.json`，你只需要放置圖片。
 - 具備搜尋功能 (感謝 [Fuse.js](https://github.com/krisk/fuse))
@@ -103,7 +103,7 @@ Neso 是精心設計的 Hugo 佈景主題，以極簡風格呈現細膩的網站
 
 ## 安裝與使用
 
-[Demo 網站](https://babeneso.github.io/hugo-neso/)同時作為說明文件，請前往進一步了解使用方式。
+[Demo 網站](https://babeneso.github.io/hugo-neso/zh-tw/)同時作為說明文件，請前往進一步了解使用方式。
 
 > [!NOTE]  
 > 此佈景主題需要 Hugo `v0.150.0` 或之後的版本
