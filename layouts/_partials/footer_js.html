@@ -148,7 +148,7 @@
 
 {{- if and (eq .Kind "page") (ne .Layout "archives" "search") (not site.Params.neso.page.hide_copy_code_button) }}
     <script>
-        document.querySelectorAll('pre > code').forEach((codeblock) => {
+        document.querySelectorAll('.cnt pre > code').forEach((codeblock) => {
             const container = codeblock.parentNode.parentNode;
 
             const copybutton = document.createElement('button');
